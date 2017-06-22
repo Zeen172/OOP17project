@@ -1,0 +1,35 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Scanner input = new Scanner(System.in);
+
+		ArrayList<ArrayList<Item>> rooms = new ArrayList <ArrayList<Item>> (); 
+		ArrayList<Item> bedroom = new ArrayList <Item>();
+		rooms.add(bedroom);
+		
+		//rooms.add(new Item ("bathroom", true, false));
+		//System.out.println(rooms.get(0).getitemName());
+
+		Item room1 = new Item ("room1", true, false) ;
+		System.out.println(room1.getitemName());
+		System.out.println (room1.getcanHold());
+		System.out.println(room1.getcanMove());
+
+		String userInput = "test1"; 
+
+		Item room2 = new Item (userInput, true, false);
+		System.out.println(room2.getitemName()); 
+		userInput = "test2";
+
+		Item room3 = new Item (userInput, true, false);
+		System.out.println(room3.getitemName());
+
+
+
+	}
+
+}

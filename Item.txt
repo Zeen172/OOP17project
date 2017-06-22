@@ -1,0 +1,28 @@
+
+public class Item {
+
+	private String itemName = ""; 
+
+	private boolean canMove = false;
+	private boolean canHold = false; 
+
+	public Item (String name, boolean hold, boolean move) {
+		
+		itemName = name; // using constructor as setter method
+		canHold = hold;
+		canMove = move; 
+	}
+
+	public String getitemName () {
+		return itemName; 
+	}
+
+	public boolean getcanMove () {
+		return canMove; 
+	}
+	
+	public boolean getcanHold () {
+		return canHold;
+	}
+}
+

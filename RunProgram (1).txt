@@ -1,0 +1,129 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class RunProgram {
+
+	static  ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();
+	static Counter nextInput = new Counter (0); 
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		// ArrayList <ArrayList <Item>> Central = new ArrayList <ArrayList <Item>> ();
+
+
+		int options = 0;
+		Scanner input = new Scanner(System.in);
+
+
+		while (options != 5){
+
+
+			System.out.println("What would the user like to do?");
+
+
+
+			System.out.println("Press 1 to create a new item.");
+			System.out.println("Press 2 to move an item.");
+			System.out.println("Press 3 to delete an item.");
+			System.out.println("Press 4 to show all item locations.");
+			System.out.println("Press 5 to end program");
+
+			boolean numberError = false;
+			String enteredString = "";
+			System.out.println("Enter the corresponding integer for desired option");
+
+			do {
+				try {
+					System.out.println("Please enter an integer 1 to 5: ");
+					enteredString = input.next();  //Read into a string
+					options = Integer.parseInt(enteredString.trim());  //then cast as a integer
+					if(options >= 1 && options <=5){
+						numberError = false;  //if we haven't bailed out, then the number must be valid.
+					}
+					else
+					{
+						numberError = true;
+						System.out.println("Your entry: \"" + enteredString + "\" is invalid...Please enter a number 1 to 5");
+					}
+				} catch(Exception e) {
+					System.out.println("Your entry: \"" + enteredString + "\" is invalid...Please enter a number 1 to 5");
+					numberError = true;  //Uh-Oh...We have a problem.
+				}
+
+			} while (numberError == true );  //Keep asking the user until the correct number is entered.
+
+
+
+
+			switch(options){
+			case 1:
+				//method
+				System.out.println("You chose case 1");
+				createItem();
+
+				break;
+
+			case 2:
+				//method
+				System.out.println("You chose case 2");
+				break;
+
+			case 3:
+				//method
+				System.out.println("You chose case 3");
+				break;
+
+			case 4:
+				//method
+				System.out.println("You chose case 4");
+				break;
+
+			case 5:
+				System.out.println("You chose case 5");
+				return;
+
+			}
+
+		}
+	}
+
+	public static void createItem (){
+		Scanner keyboard = new Scanner(System.in);
+
+		System.out.println("What is name of the item?"); 
+		String inputOne = keyboard.nextLine();
+
+		boolean	inputHold = false;
+		boolean inputMove = false;
+		System.out.println("Can this item hold other items? (1 for yes, 2 for no)"); 
+		if(keyboard.nextInt() == 1)
+		{
+			inputHold = true;
+		}
+
+		System.out.println("Can this item be moved? (1 for yes, 2 for no)"); 
+		if(keyboard.nextInt() == 1)
+		{
+			inputMove = true;
+		}
+
+		if (inputHold==true){
+			ArrayList<Item> OBJ13 = new ArrayList <Item>();
+			Central.add (OBJ13); 
+			Item userInput = new Item (inputOne, inputHold, inputMove);
+			OBJ13.add(userInput);
+			System.out.println(Central.get(nextInput.getValue()).get(0).getItemName());
+			nextInput.count();
+			
+			
+		}
+		else{
+			Item OBJ13 = new Item (inputOne, inputHold, inputMove);
+		}
+		System.out.println();
+
+
+	}
+
+}

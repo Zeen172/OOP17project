@@ -5,12 +5,15 @@ public class Item {
 
 	private boolean canMove = false;
 	private boolean canHold = false; 
+	private int IDNum = 0;
 
-	public Item (String name, boolean hold, boolean move) {
+	public Item (String name, boolean hold, boolean move, int counter) {
 		
 		itemName = name; // using constructor as setter method
 		canHold = hold;
 		canMove = move; 
+		IDNum = counter;
+		System.out.println("This item's ID number: " + IDNum);
 	}
 
 	public String getitemName () {
@@ -24,5 +27,11 @@ public class Item {
 	public boolean getcanHold () {
 		return canHold;
 	}
+	public void setIDNum (int counter) {
+		IDNum = counter;
+		
+	}
+	public int getIDNum(){
+		return IDNum;
+	}
 }
-

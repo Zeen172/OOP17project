@@ -1,32 +1,27 @@
-public static void moveItem (){
+	public static void moveItem (){
 		Scanner keyboard = new Scanner(System.in);
-		
-		System.out.println("What item would you like to move? Enter corresponding 
-
-integer. These are the options: "); 
+		int movedItem = 0;
+		do {
+		System.out.println("What item would you like to move? Enter corresponding integer. These are the options: "); 
 		for(int i=0; i<Central.size(); i++){
-			System.out.println("Press option " + i + " for " + Central.get
-
-(i).get(0).getitemName());
+			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
 		}
-		int movedItem = keyboard.nextInt();
 		
+		movedItem = keyboard.nextInt();
+		} while (Central.get(movedItem).get(0).getcanMove()==false);
 		//System.out.println(movedItem);
-		
-		System.out.println("Where should this item be moved to? These are the 
-
-options"); 
+		int moveTo = 0;
+		do {
+		System.out.println("Where should this item be moved to? These are the options"); 
 		for(int i=0; i<Central.size(); i++){
-			System.out.println("Press option " + i + " for " + Central.get
-
-(i).get(0).getitemName());
+			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
 		}
-		int moveTo = keyboard.nextInt();
-	
+		moveTo = keyboard.nextInt();
+		} while (Central.get(moveTo).get(0).getcanHold()==false);
+		
 		Central.get(moveTo).addAll(Central.get(movedItem));
-		//System.out.println(Central.get(moveTo).get(0).getitemName());
-		//System.out.println(Central.get(moveTo).get(1).getitemName());
-		
-
+		for (int i=0; i<Central.size()-1; i++){
+		System.out.println(Central.get(moveTo).get(i).getitemName());
+	
+		}
 	}
-		

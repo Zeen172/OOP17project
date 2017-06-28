@@ -12,9 +12,7 @@ public class RunProgram {
 		// ArrayList <ArrayList <Item>> Central = new ArrayList <ArrayList <Item>> ();
 		Scanner input = new Scanner(System.in);
 		int options = 0;
-		System.out.println("Create the plaze where you want to store items.");
-		String userInput="";
-		userInput = input.nextLine();
+		System.out.println("Create the place where you want to store items.");
 		System.out.println("Is this place a building or a vechile?");
 		System.out.println("1 for building");
 		System.out.println("2 for vechile");
@@ -22,7 +20,7 @@ public class RunProgram {
 		while(options <1 ||options >2){
 			boolean numberError = false;
 			String enteredString = "";
-			
+
 			do {
 				try {
 					System.out.println("Please enter an integer 1 to 2: ");
@@ -42,35 +40,26 @@ public class RunProgram {
 				}
 
 			} while (numberError == true );  //Keep asking the user until the correct number is entered.
-			
+
 			switch(options){
 			case 1:
 				//method
 				System.out.println("You chose case 1 (building)");
 				createItem();
-				
+
 				break;
 
 			case 2:
 				//method
-				System.out.println("You chose case 2 ");
+				System.out.println("You chose case 2 (vehicle)");
 				createItem();
 				break;
 			}
 		}
 
-
-
-
-
 		while (options != 5){
 
-
-
-
 			System.out.println("What would the user like to do?");
-
-
 
 			System.out.println("Press 1 to create a new item.");
 			System.out.println("Press 2 to move an item.");
@@ -116,16 +105,26 @@ public class RunProgram {
 			case 2:
 				//method
 				System.out.println("You chose case 2");
+				moveItem();
 				break;
 
 			case 3:
 				//method
 				System.out.println("You chose case 3");
+				deleteItem();
 				break;
 
 			case 4:
 				//method
 				System.out.println("You chose case 4");
+				for(int i=0; i<Central.size(); i++){
+					for( int j=0; j<Central.get(i).size(); j++){
+
+						System.out.println(Central.get(i).get(j).getitemName());
+					}
+					System.out.println("");
+				}
+
 				break;
 
 			case 5:
@@ -147,33 +146,176 @@ public class RunProgram {
 		boolean	inputHold = false;
 		boolean inputMove = false;
 		System.out.println("Can this item hold other items? (1 for yes, 2 for no)"); 
-		if(keyboard.nextInt() == 1)
+		int option = IO.readInt();
+
+		while (option <1 || option >2){
+			System.out.println("Invalid input.  Please enter 1 or 2.");
+			option = IO.readInt();
+		}
+
+		if(option == 1)
 		{
 			inputHold = true;
 		}
 
 		System.out.println("Can this item be moved? (1 for yes, 2 for no)"); 
-		if(keyboard.nextInt() == 1)
+		option = IO.readInt();
+		while(option <1 || option >2){
+			System.out.println("Invalid input. Please enter 1 or 2.");
+			option = IO.readInt();
+		}
+		if(option == 1)
 		{
 			inputMove = true;
 		}
 
-		if (inputHold==true){
-			ArrayList<Item> OBJ13 = new ArrayList <Item>();
-			Central.add (OBJ13); 
-			Item userInput = new Item (inputOne, inputHold, inputMove);
-			OBJ13.add(userInput);
-			System.out.println(Central.get(nextInput.getValue()).get(0).getItemName());
-			nextInput.count();
 
-
-		}
-		else{
-			Item OBJ13 = new Item (inputOne, inputHold, inputMove);
-		}
+		ArrayList<Item> OBJ13 = new ArrayList <Item>();
+		Central.add (OBJ13); 
+		Item userInput = new Item (inputOne, inputHold, inputMove, nextInput.getValue());
+		OBJ13.add(userInput);
+		nextInput.count();
 		System.out.println();
+		System.out.println();
+
+	}
+	public static void moveItem (){
+		Scanner keyboard = new Scanner(System.in);
+		int movedItem = 0;
+
+		do {
+
+			System.out.println("What item would you like to move? Enter corresponding integer. These are the options: "); 
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
+			}
+			movedItem = IO.readInt();
+			while(movedItem <0 || movedItem >Central.size()-1){
+				System.out.println("Invalid input. Please enter a listed integer");
+				movedItem = IO.readInt();
+			} 
+
+			//Below If/Else Statement acts as Try/Catch if user enters immovable item
+			if(Central.get(movedItem).get(0).getcanMove()==false){
+				System.out.println("Your entry: BAD");
+			}
+			else{
+				System.out.println("Your entry: GOOD");
+				break;
+			}
+		}while (Central.get(movedItem).get(0).getcanMove()==false);		
+
+		int moveTo = 0;
+
+		do {
+			System.out.println("Where should this item be moved to? These are the options"); 
+
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
+			}
+			moveTo = IO.readInt();
+			while(moveTo<0 || moveTo >Central.size()-1){
+				System.out.println("Invalid input. Please enter a listed integer");
+				moveTo = IO.readInt();
+			} 
+
+			//Below If/Else Statement acts as Try/Catch to see if selected item CAN hold other items or not
+			if(Central.get(moveTo).get(0).getcanHold()==false){
+				System.out.println("Your entry: BAD");
+			}else{
+				System.out.println("Your entry: Good");
+			}
+		} while (Central.get(moveTo).get(0).getcanHold()==false);
+
+		Central.get(moveTo).addAll(Central.get(movedItem));
+		//Central.remove(Central.get(movedItem));  //Deletes item from central array when moved to another
+
+		//Statements below is for error correcting
+		for(int i=0; i<Central.get(0).size(); i++){
+			System.out.println("THIS IS THE HOUSE ARRAY " + Central.get(0).get(i).getitemName());
+		}
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("CENTRAL ARRAY" + i + " for " + Central.get(i).get(0).getitemName());
+		}
+	}
+	public static void deleteItem(){
+		//If array only has one item, the method returns main 
+		if(Central.size()==1){
+			System.out.println("Cannot delete last item");
+			return;
+		}
+		int deletedItem = 0;
+
+		System.out.println("What item would you like to delete? Enter corresponding integer. These are the options: "); 
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
+		}
+
+		deletedItem = IO.readInt();
+		while(deletedItem<0 || deletedItem >Central.size()-1){
+			System.out.println("Invalid input. Please enter a listed integer");
+			deletedItem = IO.readInt();
+		} 
+		
+		int deleteThis = Central.get(deletedItem).get(0).getIDNum();
+		//Below statement WORKS. it DOES delete item from central array
+		Central.remove(Central.get(deletedItem));
+		
+		for(int i=0; i<Central.size(); i++){
+			for( int j=0; j<Central.get(i).size(); j++){
+
+				System.out.println(Central.get(i).get(j).getitemName());
+			}
+			System.out.println("");
+		}
+
+		//   THIS LOOP attempts to go through all the arrays and find the requested deleted item
+		System.out.println("YOU JUST DELETED THIS FROM CENTRAL" + deleteThis);
+		System.out.println("THIS IS THE START OF ");
+		
+		//This nested for loop is broken
+		for(int i=0; i<Central.size(); i++){
+			for( int j=0; j<Central.get(i).size(); j++){
+				if (deleteThis == Central.get(i).get(j).getIDNum()) {
+					//GETS THIS FAR
+					System.out.println(Central.get(i).get(j).getitemName());
+					System.out.println(Central.remove(Central.get(i).get(j)));
+					Central.remove(Central.get(i).get(j));
+					break;
+				}
+			}
+			
+			System.out.println("");
+		}
+		System.out.println("ITEMS LEFT");
+		for(int i=0; i<Central.size(); i++){
+			for( int j=0; j<Central.get(i).size(); j++){
+
+				System.out.println(Central.get(i).get(j).getitemName());
+			}
+			System.out.println("");
+		}
+
+		/*
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
+		}
+		for(int i=0; i<Central.get(0).size(); i++){
+			System.out.println("THIS IS THE HOUSE ARRAY " + Central.get(0).get(i).getitemName());
+		}*/
+
 
 
 	}
 
+
+
+
+
+
+
+
+
 }
+
+

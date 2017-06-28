@@ -1,14 +1,17 @@
 	public static void moveItem (){
 		Scanner keyboard = new Scanner(System.in);
 		int movedItem = 0;
+		
 		do {
+			
 		System.out.println("What item would you like to move? Enter corresponding integer. These are the options: "); 
 		for(int i=0; i<Central.size(); i++){
 			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
 		}
 		
-		movedItem = keyboard.nextInt();
-		} while (Central.get(movedItem).get(0).getcanMove()==false);
+		movedItem = keyboard.nextInt();     // ADD Try/Catch
+		
+		}while (Central.get(movedItem).get(0).getcanMove()==false);
 		//System.out.println(movedItem);
 		int moveTo = 0;
 		do {
@@ -16,12 +19,20 @@
 		for(int i=0; i<Central.size(); i++){
 			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getitemName());
 		}
-		moveTo = keyboard.nextInt();
+		
+		moveTo = keyboard.nextInt();     //ADD Try/Catch
+		
+		
 		} while (Central.get(moveTo).get(0).getcanHold()==false);
 		
 		Central.get(moveTo).addAll(Central.get(movedItem));
-		for (int i=0; i<Central.size()-1; i++){
-		System.out.println(Central.get(moveTo).get(i).getitemName());
-	
+		//Central.remove(Central.get(movedItem));  //Deletes item from central array when moved to another
+		
+		//Statements below is for error correcting
+		for(int i=0; i<Central.get(0).size(); i++){
+			System.out.println("THIS IS THE HOUSE ARRAY " + Central.get(0).get(i).getitemName());
+		}
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("CENTRAL ARRAY" + i + " for " + Central.get(i).get(0).getitemName());
 		}
 	}

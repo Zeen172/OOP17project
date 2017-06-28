@@ -1,0 +1,32 @@
+public static void moveItem (){
+		Scanner keyboard = new Scanner(System.in);
+		
+		System.out.println("What item would you like to move? Enter corresponding 
+
+integer. These are the options: "); 
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("Press option " + i + " for " + Central.get
+
+(i).get(0).getitemName());
+		}
+		int movedItem = keyboard.nextInt();
+		
+		//System.out.println(movedItem);
+		
+		System.out.println("Where should this item be moved to? These are the 
+
+options"); 
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("Press option " + i + " for " + Central.get
+
+(i).get(0).getitemName());
+		}
+		int moveTo = keyboard.nextInt();
+	
+		Central.get(moveTo).addAll(Central.get(movedItem));
+		//System.out.println(Central.get(moveTo).get(0).getitemName());
+		//System.out.println(Central.get(moveTo).get(1).getitemName());
+		
+
+	}
+		

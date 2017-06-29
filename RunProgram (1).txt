@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class RunProgram {
 
-	static  ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();
+	static ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();
 	static Counter nextInput = new Counter (0); 
 
 	public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class RunProgram {
 		System.out.println("1 for building");
 		System.out.println("2 for vehicle");
 		System.out.println("-----------------------------------------------------");
-
+		
 		//Below reads input and insures that it is an int
 		int initialChoice = IO.readInt();
 		//Below Do/While and try/catch make sure input is between 1 and 2
@@ -93,9 +93,16 @@ public class RunProgram {
 				System.out.println("You chose case 4 (List all Items)");
 				System.out.println("-----------------------------------------------------");
 				for(int i=0; i<Central.size(); i++){
+					System.out.println("Inside item " + Central.get(i).get(0).getitemName() + " there are ");
 					for( int j=0; j<Central.get(i).size(); j++){
+						if(Central.get(i).size()==1){
+							System.out.println("There are no items inside " + Central.get(i).get(0).getitemName());
+						}
+						else{
+							System.out.println(Central.get(i).get(j).getitemName());
+							//System.out.println("The " + Central.get(i).get(j).getitemName() +" is inside " + Central.get(j).getitemName() +" which is inside this " + Central.get(i) );
+						}
 
-						System.out.println(Central.get(i).get(j).getitemName());
 					}
 					System.out.println("");
 				}
@@ -240,7 +247,7 @@ public class RunProgram {
 		} 
 		//Below statements (lints 238-256) act as a double check for user to see if they really want to delete item or not
 		int deleteThis = Central.get(deletedItem).get(0).getIDNum();
-		System.out.println("Are you sure you want to delete " + Central.get(deleteThis).get(0).getitemName() + "?");
+		System.out.println("Are you sure you want to delete " + Central.get(deletedItem).get(0).getitemName() + "?");
 		System.out.println("Enter 1 for yes or 2 for no: ");
 		//Below statements (lines 242-246) check input to make sure it is a valid int
 		int yesorno = IO.readInt();
@@ -253,7 +260,7 @@ public class RunProgram {
 		{
 			System.out.println("User has DELETED " + Central.get(deleteThis).get(0).getitemName() + " from list");
 			//Below statement WORKS. it DOES delete item from central array
-			Central.remove(Central.get(deletedItem));
+			Central.remove(Central.get(deletedItem));  //Deletes item from Central Array
 			System.out.println();
 		}
 		else{ //called if input is 2 (item is not deleted)
@@ -263,19 +270,19 @@ public class RunProgram {
 		}
 
 		//This nested for loop is broken
-		/*for(int i=0; i<Central.size(); i++){
+		for(int i=0; i<Central.size(); i++){
 			for( int j=0; j<Central.get(i).size(); j++){
 				if (deleteThis == Central.get(i).get(j).getIDNum()) {
-					//GETS THIS FAR
+					//Below prints out item found in inner arrays...second line deletes it
 					System.out.println(Central.get(i).get(j).getitemName());
-					System.out.println(Central.remove(Central.get(i).get(j)));
-					Central.remove(Central.get(i).get(j));
+					Central.get(i).remove(Central.get(i).get(j));  //This line deletes from any arrays within item arrays
+					//Central.get(i).remove(Central.get(i).get(j));
 					break;
 				}
 			}
 
 			System.out.println("");
-		}*/
+		}
 		System.out.println("ITEMS LEFT");
 		for(int i=0; i<Central.size(); i++){
 			for( int j=0; j<Central.get(i).size(); j++){

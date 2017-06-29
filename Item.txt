@@ -10,9 +10,10 @@ public class Item {
 	public Item (String name, boolean hold, boolean move, int counter) {
 		
 		itemName = name; // using constructor as setter method
-		canHold = hold;
-		canMove = move; 
-		IDNum = counter;
+		canHold = hold;  //Property that determines if item can hold other items or not
+		canMove = move;  //Property that determines if item can move or not
+		IDNum = counter; //Sets a unique ID number for the created item
+		//Below statement was used for testing
 		System.out.println("This item's ID number: " + IDNum);
 	}
 
@@ -28,7 +29,7 @@ public class Item {
 		return canHold;
 	}
 	public void setIDNum (int counter) {
-		IDNum = counter;
+		IDNum = counter; 
 		
 	}
 	public int getIDNum(){

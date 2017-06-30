@@ -1,0 +1,44 @@
+public class Item {
+
+	private String itemName = ""; 
+
+	private boolean canMove = false;
+	private boolean canHold = false; 
+	private int IDNum = 0;
+	private int parentID = 1000;
+
+	public Item (String name, boolean hold, boolean move, int counter) {
+		
+		itemName = name; // using constructor as setter method
+		canHold = hold;  //Property that determines if item can hold other items or not
+		canMove = move;  //Property that determines if item can move or not
+		IDNum = counter; //Sets a unique ID number for the created item
+		//Below statement was used for testing
+		System.out.println("This item's ID number: " + IDNum);
+	}
+
+	public String getitemName () {
+		return itemName; 
+	}
+
+	public boolean getcanMove () {
+		return canMove; 
+	}
+	
+	public boolean getcanHold () {
+		return canHold;
+	}
+	public void setIDNum (int counter) {
+		IDNum = counter; 
+		
+	}
+	public int getIDNum(){
+		return IDNum;
+	}
+	public void setParentID(int parentalID){
+		parentID = parentalID; 
+	}
+	public int getParentID(){
+		return parentID;
+	}
+}

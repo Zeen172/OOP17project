@@ -94,7 +94,7 @@ public class RunProgram {
 					}
 					else if(count==3){
 						String moveTest=whole.get(i);
-						if(hold=Boolean.parseBoolean(moveTest)){
+						if(move=Boolean.parseBoolean(moveTest)){
 							move=true;
 						}
 						else{

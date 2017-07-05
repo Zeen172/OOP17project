@@ -1,3 +1,4 @@
+
 public class Item {
 
 	private String itemName = ""; 
@@ -5,46 +6,52 @@ public class Item {
 	private boolean canMove = false;
 	private boolean canHold = false; 
 	private int IDNum = 0;
-	private int parentID = 1000;
-	private int childID = 3999;
+	private int parentID=0;
+
 	public Item (String name, boolean hold, boolean move, int counter) {
-		
+
 		itemName = name; // using constructor as setter method
 		canHold = hold;  //Property that determines if item can hold other items or not
 		canMove = move;  //Property that determines if item can move or not
 		IDNum = counter; //Sets a unique ID number for the created item
 		//Below statement was used for testing
-		System.out.println("This item's ID number is: " + IDNum);
+		System.out.println("This item's ID number: " + IDNum);
+	}
+	public Item (String name, boolean hold, boolean move, int counter,int parentNum) {
+
+		itemName = name; // using constructor as setter method
+		canHold = hold;  //Property that determines if item can hold other items or not
+		canMove = move;  //Property that determines if item can move or not
+		IDNum = counter; //Sets a unique ID number for the created item
+		parentID = parentNum;
+		//Below statement was used for testing
+		System.out.println("This item's ID number: " + IDNum);
 	}
 
-	public String getItemName () {
+
+	public String getitemName () {
 		return itemName; 
+	}
+	public void setitemName (String name) {
+		itemName = name; 
+
 	}
 
 	public boolean getcanMove () {
 		return canMove; 
 	}
-	
+
 	public boolean getcanHold () {
 		return canHold;
 	}
 	public void setIDNum (int counter) {
 		IDNum = counter; 
-		
+
 	}
 	public int getIDNum(){
 		return IDNum;
 	}
-	public void setParentID(int parentalID){
-		parentID = parentalID; 
-	}
 	public int getParentID(){
 		return parentID;
-	}
-	public void setchildID(int childinhereID){
-		childID = childinhereID; 
-	}
-	public int getChildID(){
-		return childID;
 	}
 }

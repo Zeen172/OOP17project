@@ -1,0 +1,66 @@
+System.out.println("You chose case 5.  Program will now end.");
+				BufferedWriter bw = null;
+				try {
+					String mycontent = "This String would be written" +
+							" to the specified File";
+					//Specify the file name and path here
+					File file = new File("C:\\Users\\zeena\\Desktop\\OOPProject.txt");
+					/* This logic will make sure that the file
+					 * gets created if it is not present at the
+					 * specified location*/
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					FileWriter fw = new FileWriter(file);
+					bw = new BufferedWriter(fw);
+					for(int i=0;i<Central.size();i++){
+						bw.write(Central.get(i).get(0).getitemName());
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+						
+						if(Central.get(i).get(0).getcanHold()==true){
+							bw.write("true");
+						}
+						else{
+							bw.write("false");
+						}
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+						
+						if(Central.get(i).get(0).getcanMove()==true){
+							bw.write("true");
+						}
+						else{
+							bw.write("false");
+						}
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+						
+						bw.write( Integer.toString(Central.get(i).get(0).getIDNum()));
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+						
+						bw.write(Integer.toString(Central.get(i).get(0).getParentID()));
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+					}
+					
+
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
+				finally
+				{
+					try{
+						if(bw!=null)
+							bw.close();
+					}catch(Exception e){
+						System.out.println("Error in closing the BufferedWriter"+e);
+					}
+				}
+				return;

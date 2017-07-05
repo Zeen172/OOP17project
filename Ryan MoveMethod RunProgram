@@ -1,0 +1,887 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+public class RunProgram {
+
+	static ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();
+	static Counter nextInput = new Counter (0); 
+	public static int childin = 789;
+	public static boolean trigger =false;
+	public static int childIDin = 984;
+	public static int parentsparentID = 665;
+	public static int parentin =986;
+	public static int parentsparentsparentID=777;
+	public static int parentsparentsparentsparentID=663;
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		// ArrayList <ArrayList <Item>> Central = new ArrayList <ArrayList <Item>> ();
+		Scanner input = new Scanner(System.in);
+
+		int options = 0;  //Used to tell the switch what case to call
+		System.out.println("-----------------------------------------------------");
+		System.out.println("Create the main place where you want to store items.");
+		System.out.println("Is this place a building or a vehicle?");
+		System.out.println("1 for building");
+		System.out.println("2 for vehicle");
+		System.out.println("-----------------------------------------------------");
+
+		//Below reads input and insures that it is an int
+		int initialChoice = IO.readInt();
+		//Below Do/While and try/catch make sure input is between 1 and 2
+		while (initialChoice < 1 || initialChoice >2) {
+			System.out.println("Invalid input. Please enter an integer 1 to 2: ");
+			initialChoice = IO.readInt();
+		}
+		if(initialChoice >= 1 && initialChoice <=2){  //Sets options variable to users choice which will tell the switch which case to call
+			options = initialChoice;
+		}
+
+		//Purpose of this switch is to tell the user to create a building or vehicle first
+		switch(options){
+		case 1:
+			//method
+			System.out.println("You chose case 1 (Building)");
+			createItem();
+			break;
+
+		case 2:
+			//method
+			System.out.println("You chose case 2 (Vehicle)");
+			createItem();
+			break;
+		}
+
+		while (options != 5){ //Program stops when option 5 is selected
+
+			System.out.println("-----------------------------------------------------");
+			System.out.println("What would the user like to do?");
+			System.out.println("-----------------------------------------------------");
+			System.out.println("Press 1 to Create a New Item.");
+			System.out.println("Press 2 to Move an Item.");
+			System.out.println("Press 3 to Delete an Item.");
+			System.out.println("Press 4 to Show All Item Locations.");
+			System.out.println("Press 5 to End Program");
+			System.out.println("-----------------------------------------------------");
+			System.out.println("Enter the corresponding integer for desired option: ");
+			System.out.println("-----------------------------------------------------");
+			//Below reads input and insures that it is an int
+			int option = IO.readInt();
+			//Below Do/While and try/catch make sure input is between 1 and 5
+			while (option < 1 || option >5) {
+				System.out.println("Invalid input. Please enter an integer 1 to 5: ");
+				option = IO.readInt();
+			}
+			options = option;  //Sets entered int to switch variable
+
+			switch(options){
+			case 1:
+				//method
+				System.out.println("You chose case 1 (Create Item)");
+				createItem();
+
+				break;
+
+			case 2:
+				//method
+				System.out.println("You chose case 2 (Move Item)");
+				moveItem();
+				break;
+
+			case 3:
+				//method
+				System.out.println("You chose case 3 (Delete Item)");
+				System.out.println("-----------------------------------------------------");
+				deleteItem();
+				break;
+
+			case 4:
+				//method
+				System.out.println("You chose case 4 (List all "+ Central.size() +" Items)");
+				System.out.println("-----------------------------------------------------");
+				for(int i=0; i<Central.size(); i++){
+					if(Central.get(i).get(0).getParentID()==1000){    //1000 is default meaning it hasnt been moved
+						System.out.println("Inside item '" + Central.get(i).get(0).getItemName() + "' there are: ");
+						if(Central.get(i).size()==1){
+							System.out.println("There are no items inside '" + Central.get(i).get(0).getItemName()+"'.");
+						}
+					}
+					else{
+						int insidethis = 900;
+						insidethis = Central.get(i).get(0).getParentID();
+						System.out.println("The item::: '" + Central.get(i).get(0).getItemName() + "' is in the '" + Central.get(insidethis).get(0).getItemName()+ "'.");
+						if(Central.get(i).size()==1){
+							System.out.println("There are no items inside '" + Central.get(i).get(0).getItemName()+"'.");
+						}
+					}
+					for( int j=1; j<Central.get(i).size(); j++){
+						if(Central.get(i).size()==1){
+							System.out.println("There are no items inside '" + Central.get(i).get(0).getItemName()+"'.");
+						}
+						else{
+							int inside = 900;
+							inside = Central.get(i).get(j).getParentID();
+							//BELOW UNTESTED
+							//When Item is deleted, parentID's are one digit off.  Make a method to change parentID's when item is deleted
+							if(inside==1000){
+								break;
+							}else{
+								System.out.println("The item: '" + Central.get(i).get(j).getItemName()+ "' is inside the '" + Central.get(inside).get(0).getItemName() + "'.");
+							}
+						}
+					}
+					System.out.println("");
+				}
+				System.out.println("-----------------------------------------------------");
+				System.out.println("All recorded items have been listed above");
+				System.out.println();
+				break;
+			case 5:
+				System.out.println("You chose case 5.  Your results will be printed to a text file.  Program will now end.");
+				return;
+
+			}
+		}
+	}
+
+	public static void createItem (){
+		Scanner keyboard = new Scanner(System.in);
+
+		System.out.println("What is name of the item?");
+		String inputOne = keyboard.nextLine();
+
+		boolean	inputHold = false;  //Determines if Item can or cannot hold other items
+		boolean inputMove = false;  //Determines if Item can be moved or not
+		System.out.println("Can this item hold other items? (1 for yes, 2 for no)"); 
+
+		//Below statements reads/checks input to make sure it is an int
+		int option = IO.readInt();
+		//Below while loop checks the int to make sure it is either a 1 or 2
+		while (option <1 || option >2){
+			System.out.println("Invalid input. Please enter 1 or 2.");
+			option = IO.readInt();
+		}
+		if(option == 1)  //If enter int = 1, then the item's canHold property is set to True
+		{
+			inputHold = true;
+		}
+
+		System.out.println("Can this item be moved? (1 for yes, 2 for no)"); 
+		//Below statements reads/checks input to make sure it is an int
+		option = IO.readInt();
+		//Below while loop checks the int to make sure it is either a 1 or 2
+		while(option <1 || option >2){
+			System.out.println("Invalid input. Please enter 1 or 2.");
+			option = IO.readInt();
+		}
+		if(option == 1)
+		{
+			inputMove = true;
+		}
+
+		ArrayList<Item> OBJ13 = new ArrayList <Item>();
+		Central.add (OBJ13); 
+		Item userInput = new Item (inputOne, inputHold, inputMove, nextInput.getValue());
+		OBJ13.add(userInput);
+		nextInput.count();
+		System.out.println();
+		System.out.println();
+
+	}
+	public static void moveItem (){
+		Scanner keyboard = new Scanner(System.in);
+		int child = 0;
+
+		//Below protects against infinite loop of trying to move only one object
+		if(Central.size()<2){
+			System.out.println("Cannot move items because only one item exists.");
+			System.out.println();
+			return;
+		}
+
+		//Below Do/While loop checks to see if selected item's canMove property is true.  If false, it loops back
+		do {
+			System.out.println("What item would you like to move? Enter corresponding integer. These are the options: "); 
+			System.out.println("-----------------------------------------------------");
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+			}
+			System.out.println("-----------------------------------------------------");
+			child = IO.readInt();
+			while(child <0 || child >Central.size()-1){
+				System.out.println("Invalid input. Please enter a listed integer");
+				child = IO.readInt();
+			} 
+			//Below If/Else Statement acts as Try/Catch if user enters immovable item
+			if(Central.get(child).get(0).getcanMove()==false){
+				System.out.println("This item is not able to be moved.  Please select a different item:");
+			}
+			else{
+				System.out.println("This item can be moved!");
+				break;  //If selected item's canMove property is true, the statement breaks
+			}
+		}while (Central.get(child).get(0).getcanMove()==false);		
+
+		int parent = 1000; //Stores int corresponding to item in which selection will be moved into
+		//Below Do/While loop checks to see if selected item's canHold property is true.  If false, it loops back
+		do {
+			System.out.println("Where should this item be moved to? These are the options"); 
+			//Below For loop lists all items in the array alongside 'i' which acts as a directory
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+			}
+			parent = IO.readInt();
+			//Below while loop checks to make sure entered int is within range
+			while(parent<0 || parent >Central.size()-1){
+				System.out.println("Invalid input. Please enter a listed integer");
+				parent = IO.readInt();
+			} 
+
+			//Below If/Else Statement acts as Try/Catch to see if selected item CAN hold other items or not
+			if(Central.get(parent).get(0).getcanHold()==false){
+				System.out.println("This selection cannot hold other items.  Please select a different item: ");
+			}else
+			{
+				System.out.println("This item can hold other items!");
+				System.out.println(Central.get(child).get(0).getItemName() + " will be added to " + Central.get(parent).get(0).getItemName());
+				System.out.println();
+			}
+			if(Central.get(parent).get(0).getIDNum() == Central.get(child).get(0).getParentID())
+			{
+				System.out.println("The parent ID of child is the same as ID Num of parent. Item has already been moved.");
+				System.out.println("Can't move this item.");
+				return;
+			}
+			if(Central.get(child).get(0).getIDNum() == Central.get(parent).get(0).getParentID())
+			{
+				System.out.println("The item you are trying to move to is currently inside the 'being moved' item. ChildID is same as Parent's parentID");
+				System.out.println("Can't move this item.");
+				return;
+			}
+			if(Central.get(child).get(0).getIDNum() == Central.get(parent).get(0).getIDNum())
+			{
+				System.out.println("Stop trying to move item into itself!!!");
+				System.out.println("Can't move this item.");
+				return;
+			}
+		} while (Central.get(parent).get(0).getcanHold()==false);
+
+
+		//Below if statement checks the parent id of the moved item(Item A).  If it is located inside another item (Item B), item A is removed from item B
+		//If item B was in another item (item C), item A is removed from Item C list
+		parentin = parent;
+		childin = child;
+		//LAST try to add fork to purse,purse to bpack, bpack to house.  purse to house.  purse to bpack. breaks there
+
+		deleteDuplicates();
+
+		int parentalID = Central.get(parent).get(0).getIDNum();
+		Central.get(child).get(0).setParentID(parentalID);
+		Central.get(parent).get(0).setchildID(child);
+		childIDin = Central.get(parent).get(0).getChildID();
+		int parentParentID = Central.get(parent).get(0).getParentID();
+		parentsparentID=parentParentID;
+		//Below fixes error of duplicate reference.  If item is created then moved to an item that is already inside a different item,
+		System.out.println(trigger);
+		//the if statement deletes the first instance of the item from the overarching parent item and replaces it with the updated item
+		deleteDuplicatesFromMain();
+		System.out.println(trigger);
+		if(trigger==false){
+			System.out.println("Ending Nicely");
+			Central.get(parent).addAll(Central.get(child));
+		}
+	}
+	public static void deleteDuplicatesFromMain(){
+		//This method deletes duplicate references from the main central list
+		//If the item is alreadt in another item, this removes it from the previous parents list
+		if(parentsparentID != 1000){
+			trigger = true;
+			for(int i=0; i<Central.size(); i++){
+				//System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
+				for(int j=1; j<Central.get(i).size(); j++){
+					System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
+					//Below if the item's IDNum is equal to the Parent's IDNum OR if the item's ParentID is equal to the Parent'd IDNum
+					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==parentsparentID){
+						System.out.println("Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						Central.get(i).remove(Central.get(i).get(j));
+					}else if(Central.get(i).get(j).getIDNum()==Central.get(parentin).get(0).getIDNum()){
+						System.out.println("number 2) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						Central.get(i).remove(Central.get(i).get(j));
+					}
+				}
+			}
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("this is the 2 '"+ Central.get(i).get(0).getItemName());
+				for(int j=1; j<Central.get(i).size(); j++){
+					//Below if the item's IDNum is equal to the Parent's IDNum OR if the item's ParentID is equal to the Parent'd IDNum
+					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==parentsparentID){
+						System.out.println("33Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						Central.get(i).remove(Central.get(i).get(j));
+					}else if(Central.get(i).get(j).getIDNum()==Central.get(parentin).get(0).getIDNum()){
+						System.out.println("number 3) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						Central.get(i).remove(Central.get(i).get(j));
+					}
+				}
+			}
+			Central.get(parentin).addAll(Central.get(childin));
+			Central.get(parentsparentID).addAll(Central.get(parentin));
+			parentsparentsparentID = Central.get(parentsparentID).get(0).getParentID();
+			if(parentsparentsparentID != 1000){
+				parentsparentsparentsparentID = Central.get(parentsparentsparentID).get(0).getParentID();
+				System.out.println("SECOND LOOP HERE");
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//System.out.println("HITS THIS 1 Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(parentsparentsparentID).get(0).getItemName()+ "' container");
+						if(Central.get(i).get(j).getIDNum()==Central.get(parentsparentID).get(0).getIDNum() ){
+							System.out.println("HITS THIS two Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
+							Central.get(i).remove(Central.get(i).get(j));
+						}
+					}
+				}
+				if(parentsparentsparentsparentID!= 1000){
+					System.out.println("THIRD LOOP HERE");
+					for(int i=0; i<Central.size(); i++){
+						for(int j=1; j<Central.get(i).size(); j++){
+							//System.out.println("HITS THIS 1 Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(parentsparentsparentID).get(0).getItemName()+ "' container");
+							if(Central.get(i).get(j).getIDNum()==Central.get(parentsparentID).get(0).getIDNum() ){
+								System.out.println("HITS THIS three Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+						}
+					}
+					Central.get(parentsparentsparentsparentID).addAll(Central.get(parentsparentsparentID));
+				}
+				System.out.println("The parent 5of '" + Central.get(parentin).get(0).getItemName()+"' is '"+Central.get(parentsparentID).get(0).getItemName()+"'.");
+				System.out.println("The parent 5of '"+Central.get(parentsparentID).get(0).getItemName()+ "' is '"+ Central.get(parentsparentsparentID).get(0).getItemName()+"'.");
+				Central.get(parentsparentsparentID).addAll(Central.get(parentsparentID));
+			}
+			System.out.println("The parent item is already in another item.  Roster updated.");
+			System.out.println("The parent of '" + Central.get(childin).get(0).getItemName()+"' is '"+Central.get(parentin).get(0).getItemName()+"'.");
+			System.out.println("The parent of '"+Central.get(parentin).get(0).getItemName()+ "' is '"+ Central.get(parentsparentID).get(0).getItemName()+"'.");
+			System.out.println(parentsparentsparentID);
+
+		}else{
+			trigger = false;
+		}
+
+
+	}
+	public static void deleteChildrensChildrenItems(){
+
+		//Works for items being moved that have up to 5 items inside it
+		int childposition = Central.get(childin).get(0).getIDNum();
+		int parentcontainer = Central.get(childin).get(0).getParentID();
+	
+		if(Central.get(childposition).size()==3){
+			System.out.println("YO 3" + Central.get(childposition).get(0).getItemName());
+			for(int i=2; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						System.out.println(Central.get(j).get(0).getItemName());
+						int itemsParent =Central.get(j).get(k).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
+							System.out.println("AYO3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+		}
+		if(Central.get(childposition).size()==4){
+			System.out.println("YO 4" + Central.get(childposition).get(0).getItemName());
+			for(int i=3; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						//int itemsParent =Central.get(j).get(k).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
+							System.out.println("AYO4Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=2; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						System.out.println(Central.get(j).get(0).getItemName());
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
+							System.out.println("AYO3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+		}
+		if(Central.get(childposition).size()==5){
+			System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
+			for(int i=4; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO5Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=3; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO52Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=2; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO53Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+		}
+		if(Central.get(childposition).size()==6){
+			System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
+			for(int i=5; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						int itemsParentsParent = Central.get(itemsParent).get(0).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
+								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO64Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=4; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						int itemsParentsParent = Central.get(itemsParent).get(0).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
+								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO65Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=3; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						int itemsParentsParent = Central.get(itemsParent).get(0).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
+								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AYO66Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+			for(int i=2; i<Central.get(childposition).size(); i++){
+				int temp = Central.get(childposition).get(i).getIDNum();
+				System.out.println(Central.get(temp).get(0).getItemName());
+				for(int j=0; j<Central.size(); j++){
+					for(int k=1; k<Central.get(j).size(); k++){
+						int itemsParent =Central.get(j).get(k).getParentID();
+						int itemsParentsParent = Central.get(itemsParent).get(0).getParentID();
+						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
+								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
+								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
+							System.out.println("AY67Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							Central.get(j).remove(Central.get(j).get(k));
+							trigger=false;
+						}
+					}
+				}
+			}
+		}
+	}
+	public static void deleteDuplicates(){
+		//Deletes duplicates of the items being moved 
+		int childposition = Central.get(childin).get(0).getIDNum();
+		int parentcontainer = Central.get(childin).get(0).getParentID();
+		
+		deleteChildrensChildrenItems();
+
+		if(parentcontainer != 1000){
+			int parentsparentcontainer = Central.get(parentcontainer).get(0).getParentID();
+			for(int i=0; i<Central.size(); i++){
+				for(int j=1; j<Central.get(parentcontainer).size(); j++){
+					if(Central.get(parentcontainer).get(j).getIDNum()==childposition||Central.get(parentcontainer).get(j).getParentID()!=Central.get(i).get(0).getIDNum()
+							/*||Central.get(parentcontainer).get(j).getParentID()==childposition*/){
+						System.out.println("0Removing '" + Central.get(parentcontainer).get(j).getItemName() +"' from previous container which was '" + Central.get(parentcontainer).get(0).getItemName()+"'.");
+						System.out.println("Parents parent ID is '"+parentsparentcontainer);
+						Central.get(parentcontainer).remove(Central.get(parentcontainer).get(j));
+						trigger=false;
+					}
+				}
+			}
+
+			if(parentsparentcontainer != 1000){
+				System.out.println("YER");
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//Below line searches Central for the item being moved or for items that live within the item being moved
+						if(Central.get(i).get(j).getIDNum()==childposition||Central.get(i).get(j).getParentID()==childposition || Central.get(i).get(j).getIDNum()==parentcontainer ){
+							//Below: if the item's parentID is equal to the childID && if the containers IDNum equal to the child IDNUm, dont remove it from child array
+							if(Central.get(i).get(j).getParentID()==childposition && Central.get(i).get(0).getIDNum()==childposition ){
+								System.out.println("1Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the item's IDNum is equal to the parent's parentID && the parent's parentID is equal to the containers IDNum, dont remove item
+							else if(Central.get(i).get(j).getIDNum()== Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentcontainer).get(0).getParentID()== Central.get(i).get(0).getIDNum()){
+								System.out.println("11Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the items parentID is equal to the parent's IDNum && the items IDNum is Not equal to the child's IDNum, dont remove item
+							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(i).get(j).getIDNum()!=childposition){
+								System.out.println("1TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the item's parentID is equal to the parents parentID && the childs parent's parent's parent is equal to the containers IDNum, dont remove
+							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentsparentcontainer).get(0).getParentID()==Central.get(i).get(0).getIDNum()){
+								System.out.println("1REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==childposition /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
+								System.out.println("1HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+							else{
+								System.out.println("1Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+
+							}
+						}
+					}
+				}
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//Below line searches Central for the item being moved or for items that live within the item being moved
+						if(Central.get(i).get(j).getIDNum()==childposition||Central.get(i).get(j).getParentID()==childposition || Central.get(i).get(j).getIDNum()==parentcontainer ){
+							//Below: if the item's parentID is equal to the childID && if the containers IDNum equal to the child IDNUm, dont remove it from child array
+							if(Central.get(i).get(j).getParentID()==childposition && Central.get(i).get(0).getIDNum()==childposition ){
+								System.out.println("2Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the item's IDNum is equal to the parent's parentID && the parent's parentID is equal to the containers IDNum, dont remove item
+							else if(Central.get(i).get(j).getIDNum()== Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentcontainer).get(0).getParentID()== Central.get(i).get(0).getIDNum()){
+								System.out.println("22Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the items parentID is equal to the parent's IDNum && the items IDNum is Not equal to the child's IDNum, dont remove item
+							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(i).get(j).getIDNum()!=childposition){
+								System.out.println("2TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							//Below: if the item's parentID is equal to the parents parentID && the childs parent's parent's parent is equal to the containers IDNum, dont remove
+							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentsparentcontainer).get(0).getParentID()==Central.get(i).get(0).getIDNum()){
+								System.out.println("2REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==childposition /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
+								System.out.println("2HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+							else{
+								System.out.println("2Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+
+							}
+						}
+					}
+				}
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//Below line searches Central for the item being moved or for items that live within the item being moved
+						if(Central.get(i).get(j).getIDNum()==childposition||Central.get(i).get(j).getParentID()==childposition ){
+							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
+							if(Central.get(i).get(j).getParentID()==childposition && Central.get(i).get(0).getIDNum()==childposition){
+								System.out.println("3Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
+							}
+							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
+								System.out.println("33Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=Central.get(childposition).get(0).getIDNum()){
+								System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==childposition /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
+								System.out.println("HELLO3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+							else{
+								System.out.println("3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+
+							}
+						}
+					}
+				}
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//Below line searches Central for the item being moved or for items that live within the item being moved
+						if(Central.get(i).get(j).getIDNum()==childposition||Central.get(i).get(j).getParentID()==childposition ){
+							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
+							if(Central.get(i).get(j).getParentID()==childposition && Central.get(i).get(0).getIDNum()==childposition){
+								System.out.println("4Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
+							}
+							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
+								System.out.println("44Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=Central.get(childposition).get(0).getIDNum()){
+								System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==childposition /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
+								System.out.println("HELLO4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+							else{
+								System.out.println("4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+						}
+					}
+				}
+				for(int i=0; i<Central.size(); i++){
+					for(int j=1; j<Central.get(i).size(); j++){
+						//Below line searches Central for the item being moved or for items that live within the item being moved
+						if(Central.get(i).get(j).getIDNum()==childposition||Central.get(i).get(j).getParentID()==childposition ){
+							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
+							if(Central.get(i).get(j).getParentID()==childposition && Central.get(i).get(0).getIDNum()==childposition){
+								System.out.println("5Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
+							}
+							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
+								System.out.println("55Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=Central.get(childposition).get(0).getIDNum()){
+								System.out.println("55TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+
+							}
+							else if(Central.get(i).get(j).getParentID()==childposition /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
+								System.out.println("HELLO5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+							else{
+								System.out.println("5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								Central.get(i).remove(Central.get(i).get(j));
+							}
+						}
+					}
+				}
+				trigger=false;
+			}
+		}
+	}
+
+
+	public static void deleteItem(){
+		//If array only has one item, the method returns main 
+		if(Central.size()==1){
+			System.out.println("Cannot delete when there is only one item recorded.");
+			return;
+		}
+		int deletedItem = 0;
+		//Prompts user with list of their items with corresponding ints
+		System.out.println("What item would you like to delete? Enter corresponding integer. These are the options: "); 
+		for(int i=0; i<Central.size(); i++){
+			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+		}
+		//Reads user input and checks it
+		deletedItem = IO.readInt();
+		while(deletedItem<0 || deletedItem >Central.size()-1){
+			System.out.println("Invalid input. Please enter a listed integer");
+			deletedItem = IO.readInt();
+		} 
+		//Below statements (lints 238-256) act as a double check for user to see if they really want to delete item or not
+		int deleteThis = Central.get(deletedItem).get(0).getIDNum();
+		System.out.println("Are you sure you want to delete " + Central.get(deletedItem).get(0).getItemName() + "?");
+		System.out.println("Enter 1 for yes or 2 for no: ");
+		//Below statements (lines 242-246) check input to make sure it is a valid int
+		int yesorno = IO.readInt();
+		while (yesorno <1 || yesorno >2){
+			System.out.println("Invalid input. Please enter 1 or 2.");
+			yesorno = IO.readInt();
+		}
+		//Below if statement checks input and deletes or does not delete item
+		if(yesorno == 1)  //If yesorno is 1, item is deleted
+		{
+			if(Central.get(deleteThis).size() > 1){
+				System.out.println("There are items in this item. Before you can delete this item, move these items?");
+				moveItemWhenDelete(deleteThis + 1);
+			}
+
+			System.out.println("User has DELETED " + Central.get(deleteThis).get(0).getItemName() + " from list");
+			//Below statement WORKS. it DOES delete item from central array
+			Central.remove(Central.get(deletedItem));  //Deletes item from Central Array
+			System.out.println();
+		}
+		else{ //called if input is 2 (item is not deleted)
+			System.out.println("Deletion Canceled.");
+			System.out.println("-----------------------------------------------------");
+			return;
+		}
+
+		//Below deletes item from all other ArrayList<Item> lists
+		for(int i=0; i<Central.size(); i++){
+			for( int j=0; j<Central.get(i).size(); j++){
+				if (deleteThis == Central.get(i).get(j).getIDNum()) {
+					//Below prints out item found in inner arrays...second line deletes it
+					System.out.println(Central.get(i).get(j).getItemName());
+					Central.get(i).remove(Central.get(i).get(j));  //This line deletes from any arrays within item arrays
+					//Central.get(i).remove(Central.get(i).get(j));
+					break;
+				}
+			}
+
+			System.out.println("");
+		}
+		System.out.println("ITEMS LEFT");  //This is for testing
+		for(int i=0; i<Central.size(); i++){
+			for( int j=0; j<Central.get(i).size(); j++){
+
+				System.out.println(Central.get(i).get(j).getItemName());
+			}
+			System.out.println("");
+		}
+
+	}
+
+	public static void moveItemWhenDelete (int childID){
+		Scanner keyboard = new Scanner(System.in);
+		int child = 0;
+		//Below Do/While loop checks to see if selected item's canMove property is true.  If false, it loops back
+		do {
+			child = childID;
+		}while (Central.get(child).get(0).getcanMove()==false);		
+
+		int parent = 1000; //Stores int corresponding to item in which selection will be moved into
+		//Below Do/While loop checks to see if selected item's canHold property is true.  If false, it loops back
+		do {
+			System.out.println("Where should '" + Central.get(child).get(0).getItemName() + "' be moved to? These are the options"); 
+			//Below For loop lists all items in the array alongside 'i' which acts as a directory
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+			}
+			parent = IO.readInt();
+			//Below while loop checks to make sure entered int is within range
+			while(parent<0 || parent >Central.size()-1){
+				System.out.println("Invalid input. Please enter a listed integer");
+				parent = IO.readInt();
+			} 
+
+			//Below If/Else Statement acts as Try/Catch to see if selected item CAN hold other items or not
+			if(Central.get(parent).get(0).getcanHold()==false){
+				System.out.println("This selection cannot hold other items.  Please select a different item: ");
+			}else{
+				System.out.println("This item can hold other items!");
+				System.out.println(Central.get(child).get(0).getItemName() + " will be added to " + Central.get(parent).get(0).getItemName());
+				System.out.println();
+			}
+
+			if(Central.get(parent).get(0).getIDNum() == Central.get(child).get(0).getParentID())
+			{
+				System.out.println("The parent ID of child is the same as ID Num of parent. Item has already been moved.");
+				System.out.println("Can't move this item.");
+				return;
+			}
+			if(Central.get(child).get(0).getIDNum() == Central.get(parent).get(0).getParentID())
+			{
+				System.out.println("The IDNum of parnet is same as parentID of child. Item has already been moved.");
+				System.out.println("Can't move this item.");
+				return;
+			}
+			if(Central.get(child).get(0).getIDNum() == Central.get(parent).get(0).getIDNum())
+			{
+				System.out.println("Stop trying to move item into itself!!!");
+				System.out.println("Can't move this item.");
+				return;
+			}
+		} while (Central.get(parent).get(0).getcanHold()==false);
+
+		parentin = parent;
+		childin = child;
+
+
+		deleteDuplicates();
+
+		int parentalID = Central.get(parent).get(0).getIDNum();
+		Central.get(child).get(0).setParentID(parentalID);
+		Central.get(parent).get(0).setchildID(child);
+		childIDin = Central.get(parent).get(0).getChildID();
+		int parentParentID = Central.get(parent).get(0).getParentID();
+		parentsparentID=parentParentID;
+
+		System.out.println(trigger); //This is for testing
+
+		//Below fixes error of duplicate reference.  If item is created then moved to an item that is already inside a different item,
+		//the if statement deletes the first instance of the item from the overarching parent item and replaces it with the updated item
+		deleteDuplicatesFromMain();
+
+		System.out.println(trigger);  //This is for testing
+
+		if(trigger==false){
+			System.out.println("Ending Nicely");
+			Central.get(parent).addAll(Central.get(child));
+		}
+	}
+
+}

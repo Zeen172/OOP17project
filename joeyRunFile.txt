@@ -121,7 +121,24 @@ public class RunProgram {
 				}
 
 
-				System.out.println(itemName+hold+move+id+parentID);
+				System.out.println("moving items into parent items now");
+				
+				for(int i =0;i< Central.size();i++){
+					if(Central.get(i).get(0).getParentID()==0){
+						System.out.println(Central.get(i).get(0).getitemName()+" has no parent");
+						
+					}
+					else{
+						int currentItem=i; System.out.println(currentItem);
+						int itemParent=Central.get(i).get(0).getParentID();System.out.println(itemParent);
+						for (int j =0;j< Central.size();j++){
+							if (Central.get(j).get(0).getIDNum()==itemParent){
+								System.out.println("Moving "+Central.get(currentItem).get(0).getitemName()+" into "+Central.get(j).get(0).getitemName());
+								Central.get(j).add(Central.get(currentItem).get(0));
+							}
+						}
+					}
+				}
 
 			}
 			else if (ifFile==2){

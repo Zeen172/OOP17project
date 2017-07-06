@@ -11,7 +11,7 @@ import java.io.IOException;
 public class RunProgram {
 
 	static ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();
-	static Counter nextInput = new Counter (0); 
+	static Counter nextInput = new Counter (Central.size()); 
 	public static int childin = 789;
 	public static boolean trigger =false;
 	public static int childIDin = 984;
@@ -19,12 +19,12 @@ public class RunProgram {
 	public static int parentin =986;
 	public static int parentsparentsparentID=777;
 	public static int parentsparentsparentsparentID=663;
-	
+
 	//file reader stuff
 	static BufferedWriter bw = null;
-	static File file = new File("C:\\Users\\zeena\\Desktop\\OOPProject.txt");
-	
-	
+	static File file = new File("C:\\Users\\ran81\\Desktop\\Whatever.txt");
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -63,7 +63,7 @@ public class RunProgram {
 					}
 				}
 				try {
-					reader = new BufferedReader(new FileReader("C:\\Users\\zeena\\Desktop\\OOPProject.txt"));
+					reader = new BufferedReader(new FileReader("C:\\Users\\ran81\\Desktop\\Whatever.txt"));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -104,7 +104,7 @@ public class RunProgram {
 					}
 					else if(count==3){
 						String moveTest=whole.get(i);
-						if(hold=Boolean.parseBoolean(moveTest)){
+						if(move=Boolean.parseBoolean(moveTest)){
 							move=true;
 						}
 						else{
@@ -132,23 +132,24 @@ public class RunProgram {
 
 
 				System.out.println("moving items into parent items now");
-				
+
 				for(int i =0;i< Central.size();i++){
-					if(Central.get(i).get(0).getParentID()==0){
-						System.out.println(Central.get(i).get(0).getitemName()+" has no parent");
-						
+					if(Central.get(i).get(0).getParentID()==1000){
+						System.out.println(Central.get(i).get(0).getItemName()+" has no parent");
+
 					}
 					else{
 						int currentItem=i; System.out.println(currentItem);
 						int itemParent=Central.get(i).get(0).getParentID();System.out.println(itemParent);
 						for (int j =0;j< Central.size();j++){
 							if (Central.get(j).get(0).getIDNum()==itemParent){
-								System.out.println("Moving "+Central.get(currentItem).get(0).getitemName()+" into "+Central.get(j).get(0).getitemName());
+								System.out.println("Moving "+Central.get(currentItem).get(0).getItemName()+" into "+Central.get(j).get(0).getItemName());
 								Central.get(j).add(Central.get(currentItem).get(0));
 							}
 						}
 					}
 				}
+				
 
 			}
 			else if (ifFile==2){
@@ -186,7 +187,14 @@ public class RunProgram {
 				}
 			}
 		}while(ifFile<1||ifFile>2);
-
+		
+		int yourMothersAss=0;
+		for(int i=0;i<Central.size();i++){
+			if (yourMothersAss<Central.get(i).get(0).getIDNum()	){
+				yourMothersAss=Central.get(i).get(0).getIDNum();
+			}
+		}
+		nextInput.setValue(yourMothersAss+1);
 		while (options != 5){ //Program stops when option 5 is selected
 
 			System.out.println("-----------------------------------------------------");
@@ -203,8 +211,8 @@ public class RunProgram {
 			//Below reads input and insures that it is an int
 			int option = IO.readInt();
 			//Below Do/While and try/catch make sure input is between 1 and 5
-			
-			
+
+
 			while (option < 1 || option >5) {
 				System.out.println("Invalid input. Please enter an integer 1 to 5: ");
 				option = IO.readInt();
@@ -246,7 +254,13 @@ public class RunProgram {
 					else{
 						int insidethis = 900;
 						insidethis = Central.get(i).get(0).getParentID();
-						System.out.println("The item::: '" + Central.get(i).get(0).getItemName() + "' is in the '" + Central.get(insidethis).get(0).getItemName()+ "'.");
+						int insidethisPOS=0;
+						for(int j=0;j<Central.size();j++){
+							if (Central.get(j).get(0).getIDNum()==insidethis){
+								insidethisPOS=j;
+							}
+						}
+						System.out.println("The item::: '" + Central.get(i).get(0).getItemName() + "' is in the '" + Central.get(insidethisPOS).get(0).getItemName()+ "'.");
 						if(Central.get(i).size()==1){
 							System.out.println("There are no items inside '" + Central.get(i).get(0).getItemName()+"'.");
 						}
@@ -258,12 +272,16 @@ public class RunProgram {
 						else{
 							int inside = 900;
 							inside = Central.get(i).get(j).getParentID();
-							//BELOW UNTESTED
-							//When Item is deleted, parentID's are one digit off.  Make a method to change parentID's when item is deleted
+							int insidethisPOS=0;
+							for(int k=0; k<Central.size(); k++){
+								if (Central.get(k).get(0).getIDNum()==inside){
+									insidethisPOS=k;
+								}
+							}
 							if(inside==1000){
 								break;
 							}else{
-								System.out.println("The item: '" + Central.get(i).get(j).getItemName()+ "' is inside the '" + Central.get(inside).get(0).getItemName() + "'.");
+								System.out.println("The item: '" + Central.get(i).get(j).getItemName()+ "' is inside the '" + Central.get(insidethisPOS).get(0).getItemName() + "'.");
 							}
 						}
 					}
@@ -274,9 +292,72 @@ public class RunProgram {
 				System.out.println();
 				break;
 			case 5:
-				System.out.println("You chose case 5.  Your results will be printed to a text file.  Program will now end.");
-				return;
+				System.out.println("You chose case 5.  Program will now end.");
+				BufferedWriter bw = null;
+				try {
+					String mycontent = "This String would be written" +
+							" to the specified File";
+					//Specify the file name and path here
+					File file = new File("C:\\Users\\ran81\\Desktop\\Whatever.txt");
+					/* This logic will make sure that the file
+					 * gets created if it is not present at the
+					 * specified location*/
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					FileWriter fw = new FileWriter(file);
+					bw = new BufferedWriter(fw);
+					for(int i=0;i<Central.size();i++){
+						bw.write(Central.get(i).get(0).getItemName());
+						bw.append("");
+						bw.flush();
+						bw.newLine();
 
+						if(Central.get(i).get(0).getcanHold()==true){
+							bw.write("true");
+						}
+						else{
+							bw.write("false");
+						}
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+
+						if(Central.get(i).get(0).getcanMove()==true){
+							bw.write("true");
+						}
+						else{
+							bw.write("false");
+						}
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+
+						bw.write( Integer.toString(Central.get(i).get(0).getIDNum()));
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+
+						bw.write(Integer.toString(Central.get(i).get(0).getParentID()));
+						bw.append("");
+						bw.flush();
+						bw.newLine();
+					}
+
+
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
+				finally
+				{
+					try{
+						if(bw!=null)
+							bw.close();
+					}catch(Exception e){
+						System.out.println("Error in closing the BufferedWriter"+e);
+					}
+				}
+				return;
 			}
 		}
 	}
@@ -289,8 +370,29 @@ public class RunProgram {
 
 		boolean	inputHold = false;  //Determines if Item can or cannot hold other items
 		boolean inputMove = false;  //Determines if Item can be moved or not
+		int storesLocation = 1000;
+		int optionParent = 0;
+		if(Central.size()>0){
+			System.out.println("Where would you like this item to be located?");
+			for(int i=0; i<Central.size(); i++){
+				System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+			}
+			System.out.println("Press option 1000 to create an item that has an undetermined location.");
+			optionParent = IO.readInt();
+			
+			while(optionParent<0 ||optionParent>=Central.size()){
+				if(optionParent==1000){
+					break;
+				}
+				System.out.println("Invalid input.");
+				optionParent = IO.readInt();
+			}
+			if (optionParent!=1000){
+				storesLocation = Central.get(optionParent).get(0).getIDNum();
+			}
+		}
+		
 		System.out.println("Can this item hold other items? (1 for yes, 2 for no)"); 
-
 		//Below statements reads/checks input to make sure it is an int
 		int option = IO.readInt();
 		//Below while loop checks the int to make sure it is either a 1 or 2
@@ -319,11 +421,19 @@ public class RunProgram {
 		ArrayList<Item> OBJ13 = new ArrayList <Item>();
 		Central.add (OBJ13); 
 		Item userInput = new Item (inputOne, inputHold, inputMove, nextInput.getValue());
+		userInput.setParentID(storesLocation);
+		System.out.println(userInput.getParentID());
 		OBJ13.add(userInput);
+		if(storesLocation != 1000){
+			for(int i=0; i<Central.size(); i++){
+				if(Central.get(i).get(0).getIDNum()==storesLocation){
+					Central.get(i).addAll(OBJ13);
+				}
+			}
+		}
 		nextInput.count();
 		System.out.println();
 		System.out.println();
-
 	}
 	public static void moveItem (){
 		Scanner keyboard = new Scanner(System.in);
@@ -504,11 +614,16 @@ public class RunProgram {
 
 	}
 	public static void deleteChildrensChildrenItems(){
-
+		int childposition = 90;
 		//Works for items being moved that have up to 5 items inside it
-		int childposition = Central.get(childin).get(0).getIDNum();
-		int parentcontainer = Central.get(childin).get(0).getParentID();
-	
+		for(int p=0; p<Central.size(); p++){
+			if(Central.get(p).get(0).getIDNum()==childin){
+				childposition=p;
+			}
+		}
+		int parentcontainer = Central.get(childposition).get(0).getParentID();
+		
+
 		if(Central.get(childposition).size()==3){
 			System.out.println("YO 3" + Central.get(childposition).get(0).getItemName());
 			for(int i=2; i<Central.get(childposition).size(); i++){
@@ -517,7 +632,7 @@ public class RunProgram {
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						System.out.println(Central.get(j).get(0).getItemName());
-						int itemsParent =Central.get(j).get(k).getParentID();
+						//int itemsParent =Central.get(j).get(k).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
 							System.out.println("AYO3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
@@ -569,6 +684,9 @@ public class RunProgram {
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
+						if(itemsParent==1000){
+							return;
+						}
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
 							System.out.println("AYO5Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
@@ -617,6 +735,9 @@ public class RunProgram {
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
+						if(itemsParent==1000){
+							return;
+						}
 						int itemsParentsParent = Central.get(itemsParent).get(0).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childposition && Central.get(j).get(0).getIDNum()!=childposition 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
@@ -880,7 +1001,7 @@ public class RunProgram {
 		//Prompts user with list of their items with corresponding ints
 		System.out.println("What item would you like to delete? Enter corresponding integer. These are the options: "); 
 		for(int i=0; i<Central.size(); i++){
-			System.out.println("Press option " + i + " for " + Central.get(i).get(0).getItemName());
+			System.out.println("Press option " + Central.get(i).get(0).getIDNum() + " for " + Central.get(i).get(0).getItemName());
 		}
 		//Reads user input and checks it
 		deletedItem = IO.readInt();
@@ -890,6 +1011,7 @@ public class RunProgram {
 		} 
 		//Below statements (lints 238-256) act as a double check for user to see if they really want to delete item or not
 		int deleteThis = Central.get(deletedItem).get(0).getIDNum();
+		System.out.println("WARNING: All items inside the '" +Central.get(deletedItem).get(0).getItemName()+"' will have to be relocated." );
 		System.out.println("Are you sure you want to delete '" + Central.get(deletedItem).get(0).getItemName() + "'?");
 		System.out.println("Enter 1 for yes or 2 for no: ");
 		//Below statements (lines 242-246) check input to make sure it is a valid int
@@ -900,6 +1022,7 @@ public class RunProgram {
 		}
 		//Below if statement checks input and deletes or does not delete item
 		if(yesorno == 1)  //If yesorno is 1, item is deleted
+
 		{
 			if(Central.get(deleteThis).size() > 1){
 				System.out.println("There are items in this item. Before you can delete this item, move these items.");
@@ -939,24 +1062,6 @@ public class RunProgram {
 			}
 			System.out.println("");
 		}
-		
-		Counter tempcounter = new Counter(0);
-		for(int i=0; i<Central.size(); i++){
-			Central.get(i).get(0).setIDNum(tempcounter.getValue());
-			tempcounter.count();
-		}
-		for(int i=0; i<Central.size(); i++){
-			if(Central.get(i).get(0).getParentID()!= 1000){
-				int R = Central.get(i).get(0).getParentID();
-				if(R>Central.size()){
-					do{
-						R=R-1;
-					}while(R>Central.size());
-				}
-				int newR = Central.get(R).get(0).getIDNum();
-				Central.get(i).get(0).setParentID(newR);
-			}
-		}
 
 	}
 
@@ -964,55 +1069,17 @@ public class RunProgram {
 		Scanner keyboard = new Scanner(System.in);
 		int child = 0;
 		//Below Do/While loop checks to see if selected item's canMove property is true.  If false, it loops back
-		do {
-			child = childID;
-		}while (Central.get(child).get(0).getcanMove()==false);		
+
+		child = childID;
+
+
+		for(int i=1; i<Central.get(child).size(); i++){
+			Central.get(child).get(i).setParentID(1000);
+		}
 
 		int parent = 1000; //Stores int corresponding to item in which selection will be moved into
 		//Below Do/While loop checks to see if selected item's canHold property is true.  If false, it loops back
-		for(int i=1; i<Central.get(child).size(); i++){
-		do {
-			System.out.println("Where should '" + Central.get(child).get(i).getItemName() + "' be moved to? These are the options"); 
-			//Below For loop lists all items in the array alongside 'i' which acts as a directory
-			for(int j=0; j<Central.size(); j++){
-				System.out.println("Press option " + j + " for " + Central.get(j).get(0).getItemName());
-			}
-			parent = IO.readInt();
-			//Below while loop checks to make sure entered int is within range
-			while(parent<0 || parent >Central.size()-1){
-				System.out.println("Invalid input. Please enter a listed integer");
-				parent = IO.readInt();
-			} 
 
-			//Below If/Else Statement acts as Try/Catch to see if selected item CAN hold other items or not
-			if(Central.get(parent).get(0).getcanHold()==false){
-				System.out.println("This selection cannot hold other items.  Please select a different item: ");
-			}else{
-				System.out.println("This item can hold other items!");
-				System.out.println(Central.get(child).get(i).getItemName() + " will be added to " + Central.get(parent).get(0).getItemName());
-				System.out.println();
-			}
-
-			if(Central.get(parent).get(0).getIDNum() == Central.get(child).get(0).getParentID())
-			{
-				System.out.println("The parent ID of child is the same as ID Num of parent. Item has already been moved.");
-				System.out.println("Can't move this item.");
-				return;
-			}
-			if(Central.get(child).get(i).getIDNum() == Central.get(parent).get(0).getParentID())
-			{
-				System.out.println("The IDNum of parnet is same as parentID of child. Item has already been moved.");
-				System.out.println("Can't move this item.");
-				return;
-			}
-			if(Central.get(child).get(0).getIDNum() == Central.get(parent).get(0).getIDNum())
-			{
-				System.out.println("Stop trying to move item into itself!!!");
-				System.out.println("Can't move this item.");
-				return;
-			}
-		} while (Central.get(parent).get(0).getcanHold()==false);
-		}
 
 		parentin = parent;
 		childin = child;
@@ -1020,12 +1087,12 @@ public class RunProgram {
 
 		deleteDuplicates();
 
-		int parentalID = Central.get(parent).get(0).getIDNum();
+		int parentalID = 1000;
 		Central.get(child).get(0).setParentID(parentalID);
-		Central.get(parent).get(0).setchildID(child);
-		childIDin = Central.get(parent).get(0).getChildID();
-		int parentParentID = Central.get(parent).get(0).getParentID();
-		parentsparentID=parentParentID;
+		//Central.get(parent).get(0).setchildID(child);
+		//childIDin = Central.get(parent).get(0).getChildID();
+		//int parentParentID = Central.get(parent).get(0).getParentID();
+		parentsparentID=1000;
 
 		System.out.println(trigger); //This is for testing
 
@@ -1034,11 +1101,11 @@ public class RunProgram {
 		deleteDuplicatesFromMain();
 
 		System.out.println(trigger);  //This is for testing
-
-		if(trigger==false){
+		Central.get(child).get(0).setParentID(1000);
+		/*if(trigger==false){
 			System.out.println("Ending Nicely");
 			Central.get(parent).addAll(Central.get(child));
-		}
+		}*/
 	}
 
 }

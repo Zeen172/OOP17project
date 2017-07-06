@@ -42,7 +42,8 @@ public class RunProgram {
 		int ifFile=0;
 		BufferedReader reader = null;
 		ArrayList<String> whole =new ArrayList<String>();
-
+		
+		//asks the user if theres a file they want to read
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Do you already have a file you wish to read?");
 		System.out.println("1 for yes");
@@ -50,56 +51,57 @@ public class RunProgram {
 		System.out.println("-----------------------------------------------------");
 		do{
 			while (ifFile < 1 || ifFile >2) {
-				ifFile = IO.readInt();
+				ifFile = IO.readInt(); //reads the user input
 			}
 			if(ifFile >= 1 && ifFile <=2){  //Sets options variable to users choice which will tell the switch which case to call
 				options = ifFile;
 			}
 			else{
-				System.out.println("Invalid input. Please enter an integer 1 to 2: ");
+				System.out.println("Invalid input. Please enter an integer 1 to 2: "); //prints error when the user does not enter a 1 or a 2
 			}
 			if(ifFile==1){
 				System.out.println("Reading file now.");
-				if (!file.exists()) {
+				if (!file.exists()) { //checks if file exist
 					try {
-						file.createNewFile();
+						file.createNewFile(); //creates file if one doesn't exist
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				try {
-					reader = new BufferedReader(new FileReader("C:\\Users\\ran81\\Desktop\\Whatever.txt"));
+					reader = new BufferedReader(new FileReader("C:\\Users\\ran81\\Desktop\\Whatever.txt")); //reads the file from this location
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				System.out.println("here");
-				String sCurrentLine ="";
+				String sCurrentLine =""; //string to hold the current line of the reader
 				try {
-					while((sCurrentLine = reader.readLine())!=null){
+					while((sCurrentLine = reader.readLine())!=null){// while the line is not null,
 						System.out.println(sCurrentLine);
-						whole.add(sCurrentLine);
+						whole.add(sCurrentLine);//add the current line of the reader into the string arraylist called whole
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				//these are our variables when we create an item
 				String itemName="";
 				boolean hold=false;
 				boolean move=false;
 				int id = 0;
 				int parentID = 0;
-				int count=1;
-				for(int i=0;i<whole.size();i++){
-
-					if(count==1){
-						itemName=whole.get(i);
+				int count=1; // this will keep track of which variable we are changing
+				for(int i=0;i<whole.size();i++){// this will loop through the entire arraylist called "whole"
+					//everytime we go through the loop, count will increase by one. once it gets to 5, count will reset its value to 1
+					if(count==1){ 
+						itemName=whole.get(i);//stores an item's name if count is equal to 1
 						count++;
 					}
 					else if(count==2){
 						String holdTest=whole.get(i);
-						if(hold=Boolean.parseBoolean(holdTest)){
+						if(hold=Boolean.parseBoolean(holdTest)){//converts a string into a boolean and checks if it is equal to hold
 							hold=true;
 						}
 						else{
@@ -110,7 +112,7 @@ public class RunProgram {
 					}
 					else if(count==3){
 						String moveTest=whole.get(i);
-						if(move=Boolean.parseBoolean(moveTest)){
+						if(move=Boolean.parseBoolean(moveTest)){//converts a string into a boolean and checks if it is equal to move
 							move=true;
 						}
 						else{
@@ -121,36 +123,36 @@ public class RunProgram {
 					}
 					else if(count==4){
 						String num=whole.get(i);
-						id=Integer.parseInt(num);
+						id=Integer.parseInt(num);//converts the string into a number and stores it in variable "id"
 						count++;
 					}
 					else if(count==5){
 						String num=whole.get(i);
-						parentID=Integer.parseInt(num);
-						ArrayList<Item> OBJ13 = new ArrayList <Item>();
-						Central.add (OBJ13); 
-						Item userInput = new Item (itemName,hold,move,id,parentID);
-						System.out.println("created item with "+itemName+", "+hold+", "+move+", "+id+", "+parentID);
-						OBJ13.add(userInput);
-						count=1;
+						parentID=Integer.parseInt(num);//converts the string into a number and stores it in variable "parentID"
+						ArrayList<Item> OBJ13 = new ArrayList <Item>();//creates a new arraylist of items called "OBJ13"
+						Central.add (OBJ13); //adds the "OBJ13" arraylist to the "central" arraylist 
+						Item userInput = new Item (itemName,hold,move,id,parentID);//creates an item with all the properties from the variables we assigned before
+						System.out.println("created item with "+itemName+", "+hold+", "+move+", "+id+", "+parentID); //prints out the properties of the item we created
+						OBJ13.add(userInput);//adds the "userInput" item we created into the arraylist "OBJ13" which is in the 'central" arraylist
+						count=1;//resets count to 1 and start the process again for the next five lines in the string arraylist "whole"
 					}
 				}
 
 
 				System.out.println("moving items into parent items now");
 
-				for(int i =0;i< Central.size();i++){
-					if(Central.get(i).get(0).getParentID()==1000){
-						System.out.println(Central.get(i).get(0).getItemName()+" has no parent");
+				for(int i =0;i< Central.size();i++){//goes through every item in the arraylist "central"
+					if(Central.get(i).get(0).getParentID()==1000){// checks if parent id is 1000
+						System.out.println(Central.get(i).get(0).getItemName()+" has no parent");//1000 is the defualt parent id for items with no parents. this line prints out the item's name
 
 					}
 					else{
-						int currentItem=i; System.out.println(currentItem);
-						int itemParent=Central.get(i).get(0).getParentID();System.out.println(itemParent);
-						for (int j =0;j< Central.size();j++){
-							if (Central.get(j).get(0).getIDNum()==itemParent){
-								System.out.println("Moving "+Central.get(currentItem).get(0).getItemName()+" into "+Central.get(j).get(0).getItemName());
-								Central.get(j).add(Central.get(currentItem).get(0));
+						int currentItem=i; System.out.println(currentItem);//prints the current position of the arraylist "central"
+						int itemParent=Central.get(i).get(0).getParentID();System.out.println(itemParent);//prints the current item's parent id
+						for (int j =0;j< Central.size();j++){// goes through every item in the "central" arraylist
+							if (Central.get(j).get(0).getIDNum()==itemParent){//checks if the current item's id is the same as the previous item's parentID
+								System.out.println("Moving "+Central.get(currentItem).get(0).getItemName()+" into "+Central.get(j).get(0).getItemName());//prints the item from before is moving into the item with it's parent ID
+								Central.get(j).add(Central.get(currentItem).get(0));//adds the child to the parent here
 							}
 						}
 					}
@@ -158,8 +160,8 @@ public class RunProgram {
 				
 
 			}
-			else if (ifFile==2){
-				System.out.println("-----------------------------------------------------");
+			else if (ifFile==2){//if user does not have file....
+				System.out.println("-----------------------------------------------------");//asks them what kind of item they want to make 
 				System.out.println("Create the main place where you want to store items.");
 				System.out.println("Is this place a building or a vehicle?");
 				System.out.println("1 for building");
@@ -168,10 +170,10 @@ public class RunProgram {
 
 				//Below reads input and insures that it is an int
 				int initialChoice = IO.readInt();
-				//Below Do/While and try/catch make sure input is between 1 and 2
-				while (initialChoice < 1 || initialChoice >2) {
+				//Below While and make sure input is between 1 and 2
+				while (initialChoice < 1 || initialChoice >2) {//makes sure the user input is between 1 or 2
 					System.out.println("Invalid input. Please enter an integer 1 to 2: ");
-					initialChoice = IO.readInt();
+					initialChoice = IO.readInt();//makes sure the user puts an int as an input
 				}
 				if(initialChoice >= 1 && initialChoice <=2){  //Sets options variable to users choice which will tell the switch which case to call
 					options = initialChoice;
@@ -194,13 +196,13 @@ public class RunProgram {
 			}
 		}while(ifFile<1||ifFile>2);
 		
-		int Mother=0;
-		for(int i=0;i<Central.size();i++){
-			if (Mother<Central.get(i).get(0).getIDNum()	){
-				Mother=Central.get(i).get(0).getIDNum();
+		int Mother=0;//this will be used to set the intial value of the counter called "next input"
+		for(int i=0;i<Central.size();i++){//goes through every item in the "central" arraylist
+			if (Mother<Central.get(i).get(0).getIDNum()	){//checks if "mother" is less than the value of the current item's id number
+				Mother=Central.get(i).get(0).getIDNum();//if "mother" is less, then set "mother"'s value to that id number
 			}
 		}
-		nextInput.setValue(Mother+1);
+		nextInput.setValue(Mother+1);//sets counter equal to mother+1 to ensure newly created item id numbers do not overlap as this counter will be used to set id numbers
 		while (options != 5){ //Program stops when option 5 is selected
 			//Below displays options to user
 			System.out.println("-----------------------------------------------------");
@@ -313,41 +315,41 @@ public class RunProgram {
 					}
 					FileWriter fw = new FileWriter(file);
 					bw = new BufferedWriter(fw);
-					for(int i=0;i<Central.size();i++){
-						bw.write(Central.get(i).get(0).getItemName());
-						bw.append("");
-						bw.flush();
-						bw.newLine();
+					for(int i=0;i<Central.size();i++){//goes through every item in the arraylist
+						bw.write(Central.get(i).get(0).getItemName());//gets the name of the current item and writes it into the text file
+						bw.append("");//appends nothing to the currentline. forgot to take it out
+						bw.flush();//clears out the buffered writer
+						bw.newLine();//goes to a  new line
 
-						if(Central.get(i).get(0).getcanHold()==true){
+						if(Central.get(i).get(0).getcanHold()==true){//checks if the current item can or cannot hold other items
 							bw.write("true");
 						}
 						else{
 							bw.write("false");
 						}
-						bw.append("");
-						bw.flush();
-						bw.newLine();
+						bw.append("");//same as before
+						bw.flush();//same as before
+						bw.newLine();//same as before
 
-						if(Central.get(i).get(0).getcanMove()==true){
+						if(Central.get(i).get(0).getcanMove()==true){//checks if the current item can or cannot be moved
 							bw.write("true");
 						}
 						else{
 							bw.write("false");
 						}
-						bw.append("");
-						bw.flush();
-						bw.newLine();
+						bw.append("");//same as before
+						bw.flush();//same as before
+						bw.newLine();//same as before
 
-						bw.write( Integer.toString(Central.get(i).get(0).getIDNum()));
-						bw.append("");
-						bw.flush();
-						bw.newLine();
+						bw.write( Integer.toString(Central.get(i).get(0).getIDNum())); //changes the id num to a string and writes it to the text file
+						bw.append("");//same as before
+						bw.flush();//same as before
+						bw.newLine();//same as before
 
-						bw.write(Integer.toString(Central.get(i).get(0).getParentID()));
-						bw.append("");
-						bw.flush();
-						bw.newLine();
+						bw.write(Integer.toString(Central.get(i).get(0).getParentID()));//changes the parentID to a string and writes it to the text file
+						bw.append("");//same as before
+						bw.flush();//same as before
+						bw.newLine();//same as before
 					}
 
 
@@ -357,13 +359,13 @@ public class RunProgram {
 				finally
 				{
 					try{
-						if(bw!=null)
-							bw.close();
+						if(bw!=null)//checks if buffered write is equal to null
+							bw.close();//if it is, close it
 					}catch(Exception e){
-						System.out.println("Error in closing the BufferedWriter"+e);
+						System.out.println("Error in closing the BufferedWriter"+e);//otherwise, print error
 					}
 				}
-				return;
+				return;//ends main method
 			}
 		}
 	}

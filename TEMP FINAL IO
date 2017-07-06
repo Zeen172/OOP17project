@@ -2,6 +2,8 @@
 
 import java.io.*;
 
+//courtesy of the Rutgers CS department 
+
 public class IO
 {
 	private static BufferedReader kb =

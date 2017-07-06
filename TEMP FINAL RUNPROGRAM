@@ -10,12 +10,13 @@ import java.io.IOException;
 
 /*
  * Final Project
- * Ryan Nordeen,Joey Huang, Joe Leonardis, Dhaivat 
+ * Ryan Nordeen,Joey Huang, Joe Leonardis, Dhaivat Patel
  * Object Oriented Programming || Summer Session I
  * 7/6/2017
  */
 public class RunProgram {
 
+	private static final int PPos = 0;
 	static ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();   //Central will be used to hold all Items
 	static Counter nextInput = new Counter (Central.size());                           //Counter is used to create unique IDNums
 	public static int childin = 789;           //Will be used to run the 'Child''s IDNum Item through multiple methods
@@ -550,9 +551,20 @@ public class RunProgram {
 		}
 	}
 	public static void deleteDuplicatesFromMain(){
-		//This method deletes duplicate references from the main central list
-		//If the item is already in another item, this removes it from the previous parents list
+		//This method deletes duplicate references of the PARENT ITEMs from the main central list
+		//The method checks the parents parentID, if not 1000, it deletes the parent from its ParentId arraylist
+		//This pattern will go 4 loops deep. Checking the parentsparentID, then the parentsparentsparentID, etc.
+		//This method is similar to the original deleteDuplicates method, but this one is called after the child item is moved to its new parent,
+		//therefore, a second method should be called to recheck Central referenes of the child and parent items
 		//Commented SYSO statements were for testing purposes
+		int PPID=88;
+		int PPos=78;
+		for(int i=0; i<Central.size(); i++){
+			if(Central.get(i).get(0).getIDNum()==parentsparentID){
+				PPID = Central.get(i).get(0).getIDNum();
+				PPos = i;
+			}
+		}
 		if(parentsparentID != 1000){
 			trigger = true;
 			for(int i=0; i<Central.size(); i++){
@@ -560,7 +572,7 @@ public class RunProgram {
 				for(int j=1; j<Central.get(i).size(); j++){
 					//System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
 					//Below if the item's IDNum is equal to the Parent's IDNum OR if the item's ParentID is equal to the Parent'd IDNum
-					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==parentsparentID){
+					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==PPID){
 						//System.out.println("Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
 						Central.get(i).remove(Central.get(i).get(j));
 					}else if(Central.get(i).get(j).getIDNum()==Central.get(parentin).get(0).getIDNum()){
@@ -586,9 +598,25 @@ public class RunProgram {
 			Central.get(parentin).addAll(Central.get(childin));
 			//Below update the parent's parents if need be.
 			Central.get(parentsparentID).addAll(Central.get(parentin));
-			parentsparentsparentID = Central.get(parentsparentID).get(0).getParentID();
+			int PPPID = 93;
+			int PPPOS= 76;
+			for(int i=0; i<Central.size(); i++){
+				if(Central.get(i).get(0).getIDNum()==PPID){
+					parentsparentsparentID=Central.get(i).get(0).getParentID();
+					PPPID=Central.get(i).get(0).getIDNum();
+					PPPOS=i;
+				}
+			}
+			int PPPPID=994;
+			int PPPPos=845;
+			for(int i=0; i<Central.size(); i++){
+				if(Central.get(i).get(0).getIDNum()==parentsparentsparentID){
+					PPPPID =Central.get(i).get(0).getIDNum();
+					PPPPos=i;
+				}
+			}
 			if(parentsparentsparentID != 1000){
-				parentsparentsparentsparentID = Central.get(parentsparentsparentID).get(0).getParentID();
+				parentsparentsparentsparentID = Central.get(PPPOS).get(0).getParentID();
 				System.out.println("SECOND LOOP HERE");
 				for(int i=0; i<Central.size(); i++){
 					for(int j=1; j<Central.get(i).size(); j++){
@@ -599,7 +627,7 @@ public class RunProgram {
 						}
 					}
 				}
-				if(parentsparentsparentsparentID!= 1000){
+				if(parentsparentsparentsparentID != 1000){
 					System.out.println("THIRD LOOP HERE");
 					for(int i=0; i<Central.size(); i++){
 						for(int j=1; j<Central.get(i).size(); j++){
@@ -611,16 +639,16 @@ public class RunProgram {
 						}
 					}
 					//If need be, the parentsparentsparentID is updated
-					Central.get(parentsparentsparentsparentID).addAll(Central.get(parentsparentsparentID));
+					Central.get(PPPPos).addAll(Central.get(PPPOS));
 				}
-				System.out.println("The parent 5of '" + Central.get(parentin).get(0).getItemName()+"' is '"+Central.get(parentsparentID).get(0).getItemName()+"'.");
-				System.out.println("The parent 5of '"+Central.get(parentsparentID).get(0).getItemName()+ "' is '"+ Central.get(parentsparentsparentID).get(0).getItemName()+"'.");
-				Central.get(parentsparentsparentID).addAll(Central.get(parentsparentID));
+				System.out.println("The parent 5of '" + Central.get(parentin).get(0).getItemName()+"' is '"+Central.get(PPos).get(0).getItemName()+"'.");
+				System.out.println("The parent 5of '"+Central.get(PPos).get(0).getItemName()+ "' is '"+ Central.get(PPPOS).get(0).getItemName()+"'.");
+				Central.get(PPPOS).addAll(Central.get(PPos));
 			}
 			System.out.println("The parent item is already in another item.  Roster updated.");
 			System.out.println("The parent of '" + Central.get(childin).get(0).getItemName()+"' is '"+Central.get(parentin).get(0).getItemName()+"'.");
-			System.out.println("The parent of '"+Central.get(parentin).get(0).getItemName()+ "' is '"+ Central.get(parentsparentID).get(0).getItemName()+"'.");
-			System.out.println(parentsparentsparentID);
+			System.out.println("The parent of '"+Central.get(parentin).get(0).getItemName()+ "' is '"+ Central.get(PPos).get(0).getItemName()+"'.");
+			//System.out.println(PPPOS);
 
 		}else{
 			trigger = false;
@@ -629,6 +657,9 @@ public class RunProgram {
 
 	}
 	public static void deleteChildrensChildrenItems(){
+		//This method checks the movedItem list to see if there are any items inside it.  If so, the method finds other instances of the object and deletes them.
+		//This happens when the movedItem has been moved inside an item which has been moved inside another item and so on, thus creating multiple references that should be deleted
+		//Only works for a moved item that has 0-6 items inside it.
 		int childIDD = Central.get(childin).get(0).getIDNum();
 		int childposition = 90;
 		//Below searches the central array list for an item matching the child's IDNum and saves its position in Central to variable 'Childposition'
@@ -821,7 +852,7 @@ public class RunProgram {
 		}
 	}
 	public static void deleteDuplicates(){
-		//Deletes duplicates of the items being moved 
+		//Deletes duplicates of the items being moved from the main central list
 		int childIDD = Central.get(childin).get(0).getIDNum();
 		int childposition = 90;
 		//Below sets childposition by finding item with the same IDNum

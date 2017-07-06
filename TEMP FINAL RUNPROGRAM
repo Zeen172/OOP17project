@@ -8,6 +8,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/*
+ * Final Project
+ * Ryan Nordeen,Joey Huang, Joe Leonardis, Dhaivat 
+ * Object Oriented Programming || Summer Session I
+ * 7/6/2017
+ */
 public class RunProgram {
 
 	static ArrayList <ArrayList<Item>> Central = new ArrayList <ArrayList<Item>> ();   //Central will be used to hold all Items
@@ -532,10 +538,10 @@ public class RunProgram {
 		int parentParentID = Central.get(parent).get(0).getParentID();
 		parentsparentID=parentParentID;
 		//Below fixes error of duplicate reference.  If item is created then moved to an item that is already inside a different item,
-		System.out.println(trigger);
+		//System.out.println(trigger);
 		//the if statement deletes the first instance of the item from the overarching parent item and replaces it with the updated item
 		deleteDuplicatesFromMain();
-		System.out.println(trigger);
+		//System.out.println(trigger);
 		if(trigger==false){
 			System.out.println("Ending Nicely");
 			Central.get(parent).addAll(Central.get(child));
@@ -544,36 +550,39 @@ public class RunProgram {
 	public static void deleteDuplicatesFromMain(){
 		//This method deletes duplicate references from the main central list
 		//If the item is already in another item, this removes it from the previous parents list
+		//Commented SYSO statements were for testing purposes
 		if(parentsparentID != 1000){
 			trigger = true;
 			for(int i=0; i<Central.size(); i++){
 				//System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
 				for(int j=1; j<Central.get(i).size(); j++){
-					System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
+					//System.out.println("this is the '"+ Central.get(i).get(0).getItemName());
 					//Below if the item's IDNum is equal to the Parent's IDNum OR if the item's ParentID is equal to the Parent'd IDNum
 					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==parentsparentID){
-						System.out.println("Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						//System.out.println("Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
 						Central.get(i).remove(Central.get(i).get(j));
 					}else if(Central.get(i).get(j).getIDNum()==Central.get(parentin).get(0).getIDNum()){
-						System.out.println("number 2) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						//System.out.println("number 2) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
 						Central.get(i).remove(Central.get(i).get(j));
 					}
 				}
 			}
 			for(int i=0; i<Central.size(); i++){
-				System.out.println("this is the 2 '"+ Central.get(i).get(0).getItemName());
+				//System.out.println("this is the 2 '"+ Central.get(i).get(0).getItemName());
 				for(int j=1; j<Central.get(i).size(); j++){
 					//Below if the item's IDNum is equal to the Parent's IDNum OR if the item's ParentID is equal to the Parent'd IDNum
 					if(Central.get(i).get(j).getParentID()==Central.get(parentin).get(0).getIDNum()&& Central.get(i).get(0).getIDNum()==parentsparentID){
-						System.out.println("33Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						//System.out.println("33Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
 						Central.get(i).remove(Central.get(i).get(j));
 					}else if(Central.get(i).get(j).getIDNum()==Central.get(parentin).get(0).getIDNum()){
-						System.out.println("number 3) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
+						//System.out.println("number 3) Removed '"+ Central.get(i).get(j).getItemName()+ "' from '"+Central.get(i).get(0).getItemName()+"'.");
 						Central.get(i).remove(Central.get(i).get(j));
 					}
 				}
 			}
+			//Below Adds the child to its new parent
 			Central.get(parentin).addAll(Central.get(childin));
+			//Below update the parent's parents if need be.
 			Central.get(parentsparentID).addAll(Central.get(parentin));
 			parentsparentsparentID = Central.get(parentsparentID).get(0).getParentID();
 			if(parentsparentsparentID != 1000){
@@ -583,7 +592,7 @@ public class RunProgram {
 					for(int j=1; j<Central.get(i).size(); j++){
 						//System.out.println("HITS THIS 1 Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(parentsparentsparentID).get(0).getItemName()+ "' container");
 						if(Central.get(i).get(j).getIDNum()==Central.get(parentsparentID).get(0).getIDNum() ){
-							System.out.println("HITS THIS two Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
+							//System.out.println("HITS THIS two Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
 							Central.get(i).remove(Central.get(i).get(j));
 						}
 					}
@@ -594,11 +603,12 @@ public class RunProgram {
 						for(int j=1; j<Central.get(i).size(); j++){
 							//System.out.println("HITS THIS 1 Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(parentsparentsparentID).get(0).getItemName()+ "' container");
 							if(Central.get(i).get(j).getIDNum()==Central.get(parentsparentID).get(0).getIDNum() ){
-								System.out.println("HITS THIS three Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
+								//System.out.println("HITS THIS three Removing '" + Central.get(i).get(j).getItemName() +"' from '"+ Central.get(i).get(0).getItemName()+"'.");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 						}
 					}
+					//If need be, the parentsparentsparentID is updated
 					Central.get(parentsparentsparentsparentID).addAll(Central.get(parentsparentsparentID));
 				}
 				System.out.println("The parent 5of '" + Central.get(parentin).get(0).getItemName()+"' is '"+Central.get(parentsparentID).get(0).getItemName()+"'.");
@@ -619,7 +629,7 @@ public class RunProgram {
 	public static void deleteChildrensChildrenItems(){
 		int childIDD = Central.get(childin).get(0).getIDNum();
 		int childposition = 90;
-		//Works for items being moved that have up to 5 items inside it
+		//Below searches the central array list for an item matching the child's IDNum and saves its position in Central to variable 'Childposition'
 		for(int p=0; p<Central.size(); p++){
 			if(Central.get(p).get(0).getIDNum()==childIDD){
 				childposition=p;
@@ -627,19 +637,18 @@ public class RunProgram {
 		}
 		int parentcontainer = Central.get(childposition).get(0).getParentID();
 		
-
 		if(Central.get(childposition).size()==3){
-			System.out.println("YO 3" + Central.get(childposition).get(0).getItemName());   //Testing
+			//System.out.println("YO 3" + Central.get(childposition).get(0).getItemName());   //Testing
 			for(int i=2; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());     //Testing
+				//System.out.println(Central.get(temp).get(0).getItemName());     //Testing
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
-						System.out.println(Central.get(j).get(0).getItemName());   //Testing
+						//System.out.println(Central.get(j).get(0).getItemName());   //Testing
 						//int itemsParent =Central.get(j).get(k).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
-							System.out.println("ayo3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");  //Testing
+							//System.out.println("ayo3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");  //Testing
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -648,16 +657,16 @@ public class RunProgram {
 			}
 		}
 		if(Central.get(childposition).size()==4){
-			System.out.println("YO 4" + Central.get(childposition).get(0).getItemName());
+			//System.out.println("YO 4" + Central.get(childposition).get(0).getItemName());
 			for(int i=3; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						//int itemsParent =Central.get(j).get(k).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
-							System.out.println("AYO4Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO4Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -666,13 +675,13 @@ public class RunProgram {
 			}
 			for(int i=2; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
-						System.out.println(Central.get(j).get(0).getItemName());
+						//System.out.println(Central.get(j).get(0).getItemName());
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()){
-							System.out.println("AYO3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO3Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -681,10 +690,10 @@ public class RunProgram {
 			}
 		}
 		if(Central.get(childposition).size()==5){
-			System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
+			//System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
 			for(int i=4; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
@@ -693,7 +702,7 @@ public class RunProgram {
 						}
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO5Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO5Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -702,13 +711,13 @@ public class RunProgram {
 			}
 			for(int i=3; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO52Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO52Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -717,13 +726,13 @@ public class RunProgram {
 			}
 			for(int i=2; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO53Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO53Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -732,10 +741,10 @@ public class RunProgram {
 			}
 		}
 		if(Central.get(childposition).size()==6){
-			System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
+			//System.out.println("YO 5" + Central.get(childposition).get(0).getItemName());
 			for(int i=5; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
@@ -749,7 +758,7 @@ public class RunProgram {
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
 								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO64Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO64Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -758,7 +767,7 @@ public class RunProgram {
 			}
 			for(int i=4; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
@@ -766,7 +775,7 @@ public class RunProgram {
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID() && Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
 								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO65Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO65Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -775,7 +784,7 @@ public class RunProgram {
 			}
 			for(int i=3; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
@@ -783,7 +792,7 @@ public class RunProgram {
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
 								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AYO66Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AYO66Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -792,7 +801,7 @@ public class RunProgram {
 			}
 			for(int i=2; i<Central.get(childposition).size(); i++){
 				int temp = Central.get(childposition).get(i).getIDNum();
-				System.out.println(Central.get(temp).get(0).getItemName());
+				//System.out.println(Central.get(temp).get(0).getItemName());
 				for(int j=0; j<Central.size(); j++){
 					for(int k=1; k<Central.get(j).size(); k++){
 						int itemsParent =Central.get(j).get(k).getParentID();
@@ -800,7 +809,7 @@ public class RunProgram {
 						if(temp==Central.get(j).get(k).getIDNum()&& Central.get(j).get(0).getParentID()!=childIDD && Central.get(j).get(0).getIDNum()!=childIDD 
 								&& Central.get(j).get(0).getIDNum()!=Central.get(j).get(k).getParentID()&& Central.get(itemsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()
 								&& Central.get(itemsParentsParent).get(0).getParentID()!=Central.get(j).get(0).getIDNum()){
-							System.out.println("AY67Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
+							//System.out.println("AY67Removing '" + Central.get(j).get(k).getItemName() +"' from previous container which was '" + Central.get(j).get(0).getItemName()+"'.");
 							Central.get(j).remove(Central.get(j).get(k));
 							trigger=false;
 						}
@@ -819,6 +828,7 @@ public class RunProgram {
 				childposition=p;
 			}
 		}
+		//Below gets the parentID of the child and saves it to variable
 		int parentcontainer = Central.get(childposition).get(0).getParentID();
 		deleteChildrensChildrenItems();
 
@@ -827,8 +837,8 @@ public class RunProgram {
 			for(int i=0; i<Central.size(); i++){
 				for(int j=1; j<Central.get(parentcontainer).size(); j++){
 					if(Central.get(parentcontainer).get(j).getIDNum()==childIDD||Central.get(parentcontainer).get(j).getParentID()!=Central.get(i).get(0).getIDNum()){
-						System.out.println("0Removing '" + Central.get(parentcontainer).get(j).getItemName() +"' from previous container which was '" + Central.get(parentcontainer).get(0).getItemName()+"'.");
-						System.out.println("Parents parent ID is '"+parentsparentcontainer);
+						//System.out.println("0Removing '" + Central.get(parentcontainer).get(j).getItemName() +"' from previous container which was '" + Central.get(parentcontainer).get(0).getItemName()+"'.");
+						//System.out.println("Parents parent ID is '"+parentsparentcontainer);
 						Central.get(parentcontainer).remove(Central.get(parentcontainer).get(j));
 						trigger=false;
 					}
@@ -836,37 +846,37 @@ public class RunProgram {
 			}
 
 			if(parentsparentcontainer != 1000){
-				System.out.println("YER");
+				//System.out.println("YER");
 				for(int i=0; i<Central.size(); i++){
 					for(int j=1; j<Central.get(i).size(); j++){
 						//Below line searches Central for the item being moved or for items that live within the item being moved
 						if(Central.get(i).get(j).getIDNum()==childIDD||Central.get(i).get(j).getParentID()==childIDD || Central.get(i).get(j).getIDNum()==parentcontainer ){
 							//Below: if the item's parentID is equal to the childID && if the containers IDNum equal to the child IDNUm, dont remove it from child array
 							if(Central.get(i).get(j).getParentID()==childIDD && Central.get(i).get(0).getIDNum()==childIDD ){
-								System.out.println("1Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("1Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the item's IDNum is equal to the parent's parentID && the parent's parentID is equal to the containers IDNum, dont remove item
 							else if(Central.get(i).get(j).getIDNum()== Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentcontainer).get(0).getParentID()== Central.get(i).get(0).getIDNum()){
-								System.out.println("11Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("11Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the items parentID is equal to the parent's IDNum && the items IDNum is Not equal to the child's IDNum, dont remove item
 							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(i).get(j).getIDNum()!=childIDD){
-								System.out.println("1TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("1TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the item's parentID is equal to the parents parentID && the childs parent's parent's parent is equal to the containers IDNum, dont remove
 							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentsparentcontainer).get(0).getParentID()==Central.get(i).get(0).getIDNum()){
-								System.out.println("1REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("1REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==childIDD){
-								System.out.println("1HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("1HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 							else{
-								System.out.println("1Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("1Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 
 							}
@@ -879,30 +889,30 @@ public class RunProgram {
 						if(Central.get(i).get(j).getIDNum()==childIDD||Central.get(i).get(j).getParentID()==childIDD || Central.get(i).get(j).getIDNum()==parentcontainer ){
 							//Below: if the item's parentID is equal to the childID && if the containers IDNum equal to the child IDNUm, dont remove it from child array
 							if(Central.get(i).get(j).getParentID()==childIDD && Central.get(i).get(0).getIDNum()==childIDD ){
-								System.out.println("2Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("2Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the item's IDNum is equal to the parent's parentID && the parent's parentID is equal to the containers IDNum, dont remove item
 							else if(Central.get(i).get(j).getIDNum()== Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentcontainer).get(0).getParentID()== Central.get(i).get(0).getIDNum()){
-								System.out.println("22Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("22Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the items parentID is equal to the parent's IDNum && the items IDNum is Not equal to the child's IDNum, dont remove item
 							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(i).get(j).getIDNum()!=childIDD){
-								System.out.println("2TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("2TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							//Below: if the item's parentID is equal to the parents parentID && the childs parent's parent's parent is equal to the containers IDNum, dont remove
 							else if(Central.get(i).get(j).getParentID()==Central.get(parentcontainer).get(0).getParentID()&&Central.get(parentsparentcontainer).get(0).getParentID()==Central.get(i).get(0).getIDNum()){
-								System.out.println("2REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("2REALLYTRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==childIDD /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
-								System.out.println("2HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("2HELLORemoving '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 							else{
-								System.out.println("2Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("2Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 
 							}
@@ -915,24 +925,24 @@ public class RunProgram {
 						if(Central.get(i).get(j).getIDNum()==childIDD||Central.get(i).get(j).getParentID()==childIDD ){
 							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
 							if(Central.get(i).get(j).getParentID()==childIDD && Central.get(i).get(0).getIDNum()==childIDD){
-								System.out.println("3Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("3Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
 							}
 							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
-								System.out.println("33Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("33Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=childIDD){
-								System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==childIDD /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
-								System.out.println("HELLO3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("HELLO3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 							else{
-								System.out.println("3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("3Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 
 							}
@@ -945,24 +955,24 @@ public class RunProgram {
 						if(Central.get(i).get(j).getIDNum()==childIDD||Central.get(i).get(j).getParentID()==childIDD ){
 							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
 							if(Central.get(i).get(j).getParentID()==childIDD && Central.get(i).get(0).getIDNum()==childIDD){
-								System.out.println("4Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("4Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
 							}
 							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
-								System.out.println("44Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("44Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=childIDD){
-								System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("33TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==childIDD /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
-								System.out.println("HELLO4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("HELLO4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 							else{
-								System.out.println("4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("4Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 						}
@@ -974,24 +984,24 @@ public class RunProgram {
 						if(Central.get(i).get(j).getIDNum()==childIDD||Central.get(i).get(j).getParentID()==childIDD ){
 							//Below: if the item's parentID is equal to the childID && if the items IDNum equal to the child IDNUm, dont remove it from child array
 							if(Central.get(i).get(j).getParentID()==childIDD && Central.get(i).get(0).getIDNum()==childIDD){
-								System.out.println("5Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("5Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 								//If the item's parentID is equal to the child's ID && the Parent of that item's ID is Not equal to the parent ID of the child, remove it from that container
 							}
 							else if(Central.get(i).get(j).getIDNum()== Central.get(i).get(0).getChildID()){
-								System.out.println("55Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("55Not Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==Central.get(i).get(0).getChildID()&&Central.get(i).get(j).getIDNum()!=childIDD){
-								System.out.println("55TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("55TRYINGNot Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 
 							}
 							else if(Central.get(i).get(j).getParentID()==childIDD /*&& Central.get(i).get(0).getIDNum()!= Central.get(i).get(j).getParentID()*/){
-								System.out.println("HELLO5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("HELLO5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 							else{
-								System.out.println("5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
+								//System.out.println("5Removing '" + Central.get(i).get(j).getItemName() +"' from '"+Central.get(i).get(0).getItemName() +"' container");
 								Central.get(i).remove(Central.get(i).get(j));
 							}
 						}
@@ -1069,14 +1079,14 @@ public class RunProgram {
 
 			System.out.println("");
 		}
-		System.out.println("ITEMS LEFT");  //This is for testing
+		/*System.out.println("ITEMS LEFT");  //This is for testing
 		for(int i=0; i<Central.size(); i++){
 			for( int j=0; j<Central.get(i).size(); j++){
 
 				System.out.println(Central.get(i).get(j).getItemName());
 			}
 			System.out.println("");
-		}
+		}*/
 
 	}
 
